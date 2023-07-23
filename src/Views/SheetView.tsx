@@ -3,6 +3,7 @@
 import { MarkdownPostProcessorContext } from "obsidian";
 import { SheetjsSettings } from "src/Settings";
 import Spreadsheet from "x-data-spreadsheet";
+// import "x-data-spreadsheet/dist/xspreadsheet.css";
 
 export function processCodeBlock(source: string, el: HTMLElement, settings: SheetjsSettings, ctx: MarkdownPostProcessorContext) {
     
@@ -18,8 +19,11 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
   
       // data validation
 
-
+    const container = el.createDiv()  
+    container.style.width="100%";
+    container.style.height="800px";
+    // container.style.position="relative";
     // const root = createRoot(el);
-    const s = new Spreadsheet(el);
+    const s = new Spreadsheet(container);
     console.log(`spreadsheet`, s)
 }

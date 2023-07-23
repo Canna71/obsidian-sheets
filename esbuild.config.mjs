@@ -56,6 +56,7 @@ esbuild.build({
 esbuild.build({
 	entryPoints: ['styles.scss'],
     outfile: "styles.css",
+    // outdir: "/",
 	watch: !prod,
     plugins: [sassPlugin()]
 }).catch(() => process.exit(1));

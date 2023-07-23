@@ -2,7 +2,10 @@ import esbuild from "esbuild";
 import process from "process";
 import builtins from 'builtin-modules'
 import {sassPlugin} from 'esbuild-sass-plugin'
-import svgrPlugin from 'esbuild-plugin-svgr';
+// import svgrPlugin from 'esbuild-plugin-svgr';
+import { lessLoader } from 'esbuild-plugin-less';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// import * as path from 'path'
 
 const banner =
 `/*
@@ -42,7 +45,12 @@ esbuild.build({
 	sourcemap: prod ? false : 'inline',
 	treeShaking: true,
 	outfile: 'main.js',
-    plugins: [svgrPlugin()]
+    // https://github.com/glromeo/esbuild-sass-plugin#--rewriting-relative-urls
+    plugins: [ lessLoader({})],
+    loader: {
+        '.ts': 'ts',
+        '.svg': 'dataurl',
+    }
 }).catch(() => process.exit(1));
 
 esbuild.build({
@@ -51,3 +59,14 @@ esbuild.build({
 	watch: !prod,
     plugins: [sassPlugin()]
 }).catch(() => process.exit(1));
+//  node_modules/x-data-spreadsheet/src/index.less
+
+/*
+
+{
+        precompile(source, pathname) {
+          const basedir = path.dirname(pathname)
+          return source.replace(/(url\(['"]?)(\.\.?\/)([^'")]+['"]?\))/g, `$1${basedir}/$2$3`)
+        }
+      }
+*/

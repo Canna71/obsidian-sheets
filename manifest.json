@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-template",
-	"name": "template",
+	"id": "obsidian-sheetjs",
+	"name": "sheetjs",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "TODO:",

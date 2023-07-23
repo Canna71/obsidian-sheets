@@ -6,16 +6,16 @@ import { createRoot, Root } from "react-dom/client";
 
 
 import { loadMathJax } from "obsidian";
-import { TemplateSettings } from "src/Settings";
-import { getTemplateSettings } from "src/main";
-export const TEMPLATE_VIEW = "Template-view";
+import { SheetjsSettings } from "src/Settings";
+import { getSheetjsSettings } from "src/main";
+export const SHEETJS_VIEW = "Sheetjs-view";
 
-export const TemplateContext = React.createContext<any>({});
+export const SheetjsContext = React.createContext<any>({});
 
 
 
-export class TemplateView extends ItemView {
-    settings: TemplateSettings;
+export class SheetjsView extends ItemView {
+    settings: SheetjsSettings;
     root: Root;
     state = {
 
@@ -25,8 +25,8 @@ export class TemplateView extends ItemView {
 
     constructor(leaf: WorkspaceLeaf) {
         super(leaf);
-        // this.settings = (this.app as any).plugins.plugins["obsidian-Template"].settings as TemplateSettings;
-        this.settings = getTemplateSettings();
+        // this.settings = (this.app as any).plugins.plugins["obsidian-Sheetjs"].settings as SheetjsSettings;
+        this.settings = getSheetjsSettings();
         this.state = {
 
         };
@@ -34,11 +34,11 @@ export class TemplateView extends ItemView {
     }
 
     getViewType() {
-        return TEMPLATE_VIEW;
+        return SHEETJS_VIEW;
     }
 
     getDisplayText() {
-        return "Template";
+        return "Sheetjs";
     }
 
     override onResize(): void {
@@ -57,12 +57,12 @@ export class TemplateView extends ItemView {
 
         this.root.render(
             <React.StrictMode>
-                <TemplateContext.Provider value={{
+                <SheetjsContext.Provider value={{
                     width: this.contentEl.innerWidth,
                     settings: this.settings
                 }}>
                    <div>TODO:</div>
-                </TemplateContext.Provider>
+                </SheetjsContext.Provider>
             </React.StrictMode>
         );
     }

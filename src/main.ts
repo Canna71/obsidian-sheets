@@ -1,9 +1,9 @@
-import { DEFAULT_SETTINGS, TemplateSettings } from "src/Settings";
+import { DEFAULT_SETTINGS, SheetjsSettings } from "src/Settings";
 import { addIcon, MarkdownView } from "obsidian";
 
 // import { MathResult } from './Extensions/ResultMarkdownChild';
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { TemplateView, TEMPLATE_VIEW } from "../Views/TemplateView";
+import { SheetjsView, SHEETJS_VIEW } from "../Views/SheetjsView";
 import {
     App,
     finishRenderMath,
@@ -12,7 +12,7 @@ import {
     Plugin,
     WorkspaceLeaf,
 } from "obsidian";
-import { TemplateSettingsTab } from "src/SettingTab";
+import { SheetjsSettingsTab } from "src/SettingTab";
 
 
 const sigma = `<path stroke="currentColor" fill="none" d="M78.6067 22.8905L78.6067 7.71171L17.8914 7.71171L48.2491 48.1886L17.8914 88.6654L78.6067 88.6654L78.6067 73.4866" opacity="1"  stroke-linecap="round" stroke-linejoin="round" stroke-width="6" />
@@ -20,16 +20,16 @@ const sigma = `<path stroke="currentColor" fill="none" d="M78.6067 22.8905L78.60
 
 // Remember to rename these classes and interfaces!
 
-let gSettings: TemplateSettings;
+let gSettings: SheetjsSettings;
 
-export function getTemplateSettings() { return gSettings; }
-export default class TemplatePlugin extends Plugin {
-    settings: TemplateSettings;
+export function getSheetjsSettings() { return gSettings; }
+export default class SheetjsPlugin extends Plugin {
+    settings: SheetjsSettings;
  
     async onload() {
         await this.loadSettings();
 
-        this.registerView(TEMPLATE_VIEW, (leaf) => new TemplateView(leaf));
+        this.registerView(SHEETJS_VIEW, (leaf) => new SheetjsView(leaf));
 
         addIcon("sigma",sigma); 
 
@@ -38,18 +38,18 @@ export default class TemplatePlugin extends Plugin {
             // This creates an icon in the left ribbon.
             const ribbonIconEl = this.addRibbonIcon(
                 "sigma",
-                "Open Template",
+                "Open Sheetjs",
                 (evt: MouseEvent) => {
                     this.activateView();
                 }
             );
             // Perform additional things with the ribbon
-            ribbonIconEl.addClass("Template-ribbon-class");
+            ribbonIconEl.addClass("Sheetjs-ribbon-class");
         }
 
         this.addCommand({
-            id: "show-Template-view",
-            name: "Show Template Sidebar",
+            id: "show-Sheetjs-view",
+            name: "Show Sheetjs Sidebar",
             callback: () => this.activateView(),
           });
          
@@ -85,11 +85,11 @@ export default class TemplatePlugin extends Plugin {
             this
         );
 
-        this.addSettingTab(new TemplateSettingsTab(this.app, this));
+        this.addSettingTab(new SheetjsSettingsTab(this.app, this));
     }
 
     onunload() {
-        this.app.workspace.detachLeavesOfType(TEMPLATE_VIEW);
+        this.app.workspace.detachLeavesOfType(SHEETJS_VIEW);
     }
 
     async loadSettings() {
@@ -106,18 +106,18 @@ export default class TemplatePlugin extends Plugin {
     }
 
     async activateView() {
-        this.app.workspace.detachLeavesOfType(TEMPLATE_VIEW);
+        this.app.workspace.detachLeavesOfType(SHEETJS_VIEW);
 
         await this.app.workspace.getRightLeaf(false).setViewState(
             {
-                type: TEMPLATE_VIEW,
+                type: SHEETJS_VIEW,
                 active: true,
             },
             { settings: this.settings }
         );
 
         this.app.workspace.revealLeaf(
-            this.app.workspace.getLeavesOfType(TEMPLATE_VIEW)[0]
+            this.app.workspace.getLeavesOfType(SHEETJS_VIEW)[0]
         );
     }
 
@@ -125,7 +125,7 @@ export default class TemplatePlugin extends Plugin {
         await loadMathJax();
         await finishRenderMath();
         this.registerMarkdownCodeBlockProcessor(
-            "Template",
+            "Sheetjs",
             (source, el, ctx) => {
                 // processCodeBlock(source, el, this.settings, ctx);
             }
@@ -140,6 +140,6 @@ export default class TemplatePlugin extends Plugin {
     }
 
     async registerEditorExtensions() {
-        // this.registerEditorExtension([resultField, TemplateConfigField]);
+        // this.registerEditorExtension([resultField, SheetjsConfigField]);
     }
 }

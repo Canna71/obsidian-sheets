@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-template",
-	"name": "template",
+	"id": "obsidian-sheetjs",
+	"name": "SheetJS",
 	"version": "0.5.7",
 	"minAppVersion": "0.15.0",
 	"description": "Computer Algebra System for Onsidian",

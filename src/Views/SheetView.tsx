@@ -6,7 +6,7 @@ import Spreadsheet from "x-data-spreadsheet";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
 import * as fs from "fs/promises"
 import * as XLSX from "xlsx"
-import {stox} from "../utils/xlsxpread"
+import {stox, xtos} from "../utils/xlsxpread"
 
 export function processCodeBlock(source: string, el: HTMLElement, settings: SheetjsSettings, ctx: MarkdownPostProcessorContext) {
 
@@ -76,6 +76,7 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     .change(data => {
         // save data 
         console.log(data)
+        XLSX.writeFile(xtos(data) as any, `C:\\Users\\hh7gabcannat\\Projects\\Personal\\obsidian-dev\\DEV\\.obsidian\\plugins\\obsidian-sheetjs\\SampleData.xlsx`);
     });
 
     (async() => {

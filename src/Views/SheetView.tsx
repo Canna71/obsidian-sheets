@@ -1,12 +1,33 @@
 // import * as React from "react";
 // import { createRoot } from "react-dom/client";
-import { MarkdownPostProcessorContext } from "obsidian";
+import { MarkdownPostProcessorContext, debounce } from "obsidian";
 import { SheetjsSettings } from "src/Settings";
 import Spreadsheet from "x-data-spreadsheet";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
 import * as fs from "fs/promises"
+import * as path from "path"
+
 import * as XLSX from "xlsx"
 import { stox, xtos } from "../utils/xlsxpread"
+
+function resolve_book_type(fileName: string):XLSX.BookType {
+	const _BT:any = {
+		"xls": "biff8",
+		"htm": "html",
+		"slk": "sylk",
+		"socialcalc": "eth",
+		"Sh33tJS": "WTF"
+	};
+    let bookType = "xlsx";
+	const ext = fileName.slice(fileName.lastIndexOf(".")).toLowerCase();
+	if(ext.match(/^\.[a-z]+$/)) {
+        bookType = ext.slice(1) 
+    }
+	bookType = _BT[bookType] || bookType;
+    return bookType as XLSX.BookType;
+}
+
+
 
 export function processCodeBlock(source: string, el: HTMLElement, settings: SheetjsSettings, ctx: MarkdownPostProcessorContext) {
 
@@ -28,6 +49,10 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     // });
 
     // data validation
+
+    // const filename = `/Users/gcannata/Documents/Obsidian Vault/Dev Vault/Dev/.obsidian/plugins/obsidian-sheetjs/SampleData.xlsx`;
+
+    const filename = `/stuff/Book1.xlsx`;
 
     const container = el.createDiv()
     // container.style.width = "100%";
@@ -73,23 +98,30 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
         .loadData({
 
         })
-        .change(data => {
+        .change(debounce(data => {
             // save data 
             console.log(data)
-            XLSX.writeFile(xtos(data) as any, `C:\\Users\\hh7gabcannat\\Projects\\Personal\\obsidian-dev\\DEV\\.obsidian\\plugins\\obsidian-sheetjs\\SampleData.xlsx`);
-        });
+            const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
+            const bookType = resolve_book_type(filename);
+            const bytes = XLSX.write(wb,{
+                bookType: bookType,
+                type: "buffer"
+            });
+            // fs.writeFile(filename,bytes);
+            app.vault.adapter.writeBinary(filename,bytes)
+            // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
+        },1000));
 
     (async () => {
-        // const ab = await (await fetch("https://sheetjs.com/pres.numbers")).arrayBuffer();
-        //ctx.sourcePath
-        // TODO: take relative path
-        const data = await fs.readFile(`C:\\Users\\hh7gabcannat\\Projects\\Personal\\obsidian-dev\\DEV\\.obsidian\\plugins\\obsidian-sheetjs\\SampleData.xlsx`)
+        
+        const data = await app.vault.adapter.readBinary(filename)
         s.loadData(stox(XLSX.read(data)));
     })();
 
     // see https://docs.sheetjs.com/docs/demos/grid/xs
     // https://docs.sheetjs.com/xspreadsheet/
     // https://github.com/myliang/x-spreadsheet
-    
-    console.log(`spreadsheet`, s)
+    // TODO: support other formats, not only binary
+    // TODO: save into code block?
+    // TODO: support $A$2
 }

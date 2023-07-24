@@ -1,29 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import * as React from "react";
 // import { createRoot } from "react-dom/client";
-import { MarkdownPostProcessorContext, debounce } from "obsidian";
+import { MarkdownPostProcessorContext, MarkdownView, debounce, parseYaml, stringifyYaml } from "obsidian";
 import { SheetjsSettings } from "src/Settings";
 import Spreadsheet from "x-data-spreadsheet";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
-import * as fs from "fs/promises"
-import * as path from "path"
+// import * as fs from "fs/promises"
+// import * as path from "path"
 
 import * as XLSX from "xlsx"
 import { stox, xtos } from "../utils/xlsxpread"
 
-function resolve_book_type(fileName: string):XLSX.BookType {
-	const _BT:any = {
-		"xls": "biff8",
-		"htm": "html",
-		"slk": "sylk",
-		"socialcalc": "eth",
-		"Sh33tJS": "WTF"
-	};
+function resolve_book_type(fileName: string): XLSX.BookType {
+    const _BT: any = {
+        "xls": "biff8",
+        "htm": "html",
+        "slk": "sylk",
+        "socialcalc": "eth",
+        "Sh33tJS": "WTF"
+    };
     let bookType = "xlsx";
-	const ext = fileName.slice(fileName.lastIndexOf(".")).toLowerCase();
-	if(ext.match(/^\.[a-z]+$/)) {
-        bookType = ext.slice(1) 
+    const ext = fileName.slice(fileName.lastIndexOf(".")).toLowerCase();
+    if (ext.match(/^\.[a-z]+$/)) {
+        bookType = ext.slice(1)
     }
-	bookType = _BT[bookType] || bookType;
+    bookType = _BT[bookType] || bookType;
     return bookType as XLSX.BookType;
 }
 
@@ -39,8 +40,11 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     const styles = getComputedStyle(cel);
     const bgColor = "#ffffff" || styles.getPropertyValue('background');
     const fgColor = "#0a0a0a" || styles.getPropertyValue("color")
-    const font = "Sans Serifs" || styles.getPropertyValue('font');
+    // const font = "Sans Serifs" || styles.getPropertyValue('font');
 
+    // if((ctx as any).containerEl.getElementsByClassName("x-spreadsheet").length){
+    //     return;
+    // }
 
     // const s = new Spreadsheet("#x-spreadsheet-demo")
     // .loadData({}) // load data
@@ -52,7 +56,10 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
 
     // const filename = `/Users/gcannata/Documents/Obsidian Vault/Dev Vault/Dev/.obsidian/plugins/obsidian-sheetjs/SampleData.xlsx`;
 
-    const filename = `/stuff/Book2.xls`;
+
+    const options = parseYaml(source) || {}
+
+    const { filename, data } = options;
     // const filename = `/stuff/Items.csv`;
     // const filename = `/stuff/Book1.xlsx`;
 
@@ -102,23 +109,61 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
         })
         .change(debounce(data => {
             // save data 
-            console.log(data)
+            // console.log(data)
             const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
-            const bookType = resolve_book_type(filename);
-            const bytes = XLSX.write(wb,{
-                bookType: bookType,
-                type: "buffer"
-            });
-            // fs.writeFile(filename,bytes);
-            app.vault.adapter.writeBinary(filename,bytes)
+            if (filename) {
+                const bookType = resolve_book_type(filename);
+                const bytes = XLSX.write(wb, {
+                    bookType: bookType,
+                    type: "buffer"
+                });
+                // fs.writeFile(filename,bytes);
+                app.vault.adapter.writeBinary(filename, bytes)
+            } else {
+             //                
+            }
+ 
             // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
-        },1000));
-
-    (async () => {
+        }, 1000));
         
-        const data = await app.vault.adapter.readBinary(filename)
-        s.loadData(stox(XLSX.read(data)));
-    })();
+        if(!filename){
+            el.onblur =  (e)=>{
+                const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
+                const data = XLSX.write(wb, {
+                    bookType: "xlsx",
+                    type: "base64"
+                }); 
+                // view contains the editor to change the markdown
+                const view : MarkdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
+                // the context contains the begin and end of the block in the markdown file
+                const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
+                // const lineno = sec?.lineStart + (i + 1);
+                // let line = view?.editor.getLine(lineno).split(",");
+                // line[j] = ev.currentTarget.value;
+                if(sec){
+                    const obj = {data}
+                    const yaml = stringifyYaml(obj)+"\n"
+                    view?.editor.replaceRange(yaml,{line:sec?.lineStart+1,ch:0},{line: sec?.lineEnd,ch: 0},"*")
+                    console.log("Data saved on code block")
+                }
+                }
+
+        } 
+
+    // TODO: wait for data to be loaded before creating the spreadsheet
+    if (filename) {
+        (async () => {
+            if(filename){
+                const data = await app.vault.adapter.readBinary(filename)
+                s.loadData(stox(XLSX.read(data)));
+            } 
+
+        })();
+    }else {
+        s.loadData(stox(XLSX.read(data)))
+    }
+
+    (ctx as any).spreadsheet = s;
 
     // see https://docs.sheetjs.com/docs/demos/grid/xs
     // https://docs.sheetjs.com/xspreadsheet/

@@ -1,3 +1,12 @@
 // @import "x-data-spreadsheet/dist/xspreadsheet.css"
 //
-@import "main"
+@import "main";
+
+// override 
+
+div.x-spreadsheet-sheet > div.x-spreadsheet-overlayer > div > div.x-spreadsheet-editor > div > textarea {
+    background-color: #ffffff;
+    color: #000000;
+    box-shadow: inherit;
+}
+

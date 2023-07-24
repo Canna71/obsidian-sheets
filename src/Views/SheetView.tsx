@@ -4,13 +4,21 @@ import { MarkdownPostProcessorContext } from "obsidian";
 import { SheetjsSettings } from "src/Settings";
 import Spreadsheet from "x-data-spreadsheet";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
+import * as fs from "fs/promises"
+import * as XLSX from "xlsx"
+import {stox} from "../utils/xlsxpread"
 
 export function processCodeBlock(source: string, el: HTMLElement, settings: SheetjsSettings, ctx: MarkdownPostProcessorContext) {
 
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const containerWidth = Math.clamp((ctx as any).containerEl.offsetWidth, 200, 700);
-    const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 700);
+    const containerWidth = Math.clamp((ctx as any).containerEl.offsetWidth, 200, 1400);
+    const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
+    const cel = document.getElementsByClassName("view-content")[0]
+    const styles = getComputedStyle(cel);
+    const bgColor = "#ffffff" || styles.getPropertyValue('background');
+    const fgColor = "#0a0a0a" || styles.getPropertyValue("color")
+    const font = "Sans Serifs" || styles.getPropertyValue('font');
 
 
     // const s = new Spreadsheet("#x-spreadsheet-demo")
@@ -22,8 +30,8 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     // data validation
 
     const container = el.createDiv()
-    container.style.width = "100%";
-    container.style.height = "800px";
+    // container.style.width = "100%";
+    // container.style.height = "800px";
     // container.style.position="relative";
     // const root = createRoot(el);
     const s = new Spreadsheet(container, {
@@ -33,33 +41,33 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
         showContextmenu: true,
         view: {
             height: () => containerHeight,
-            width: () =>  containerWidth
+            width: () => containerWidth
         },
 
         row: {
-            len: 100,
+            len: 30,
             height: 25,
         },
         col: {
-            len: 26,
+            len: 16,
             width: 100,
             indexWidth: 60,
             minWidth: 60,
         },
         style: {
-            bgcolor: '#ffffff',
+            bgcolor: bgColor,
             align: 'left',
             valign: 'middle',
             textwrap: false,
             strike: false,
             underline: false,
-            color: '#0a0a0a',
+            color: fgColor,
             font: {
-                name: 'Helvetica',
+                // name: font,
                 size: 10,
                 bold: false,
                 italic: false,
-            },
+            } as any,
         },
     })
     .loadData({
@@ -68,7 +76,15 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     .change(data => {
         // save data 
         console.log(data)
-      });
-    
+    });
+
+    (async() => {
+        // const ab = await (await fetch("https://sheetjs.com/pres.numbers")).arrayBuffer();
+        //ctx.sourcePath
+        // TODO: take relative path
+        const data = await fs.readFile(`C:\\Users\\hh7gabcannat\\Projects\\Personal\\obsidian-dev\\DEV\\.obsidian\\plugins\\obsidian-sheetjs\\SampleData.xlsx`)
+        s.loadData(stox(XLSX.read(data)));
+      })();
+
     console.log(`spreadsheet`, s)
 }

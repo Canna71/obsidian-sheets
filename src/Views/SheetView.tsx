@@ -6,7 +6,7 @@ import Spreadsheet from "x-data-spreadsheet";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
 import * as fs from "fs/promises"
 import * as XLSX from "xlsx"
-import {stox, xtos} from "../utils/xlsxpread"
+import { stox, xtos } from "../utils/xlsxpread"
 
 export function processCodeBlock(source: string, el: HTMLElement, settings: SheetjsSettings, ctx: MarkdownPostProcessorContext) {
 
@@ -70,22 +70,26 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
             } as any,
         },
     })
-    .loadData({
+        .loadData({
 
-    })
-    .change(data => {
-        // save data 
-        console.log(data)
-        XLSX.writeFile(xtos(data) as any, `C:\\Users\\hh7gabcannat\\Projects\\Personal\\obsidian-dev\\DEV\\.obsidian\\plugins\\obsidian-sheetjs\\SampleData.xlsx`);
-    });
+        })
+        .change(data => {
+            // save data 
+            console.log(data)
+            XLSX.writeFile(xtos(data) as any, `C:\\Users\\hh7gabcannat\\Projects\\Personal\\obsidian-dev\\DEV\\.obsidian\\plugins\\obsidian-sheetjs\\SampleData.xlsx`);
+        });
 
-    (async() => {
+    (async () => {
         // const ab = await (await fetch("https://sheetjs.com/pres.numbers")).arrayBuffer();
         //ctx.sourcePath
         // TODO: take relative path
         const data = await fs.readFile(`C:\\Users\\hh7gabcannat\\Projects\\Personal\\obsidian-dev\\DEV\\.obsidian\\plugins\\obsidian-sheetjs\\SampleData.xlsx`)
         s.loadData(stox(XLSX.read(data)));
-      })();
+    })();
 
+    // see https://docs.sheetjs.com/docs/demos/grid/xs
+    // https://docs.sheetjs.com/xspreadsheet/
+    // https://github.com/myliang/x-spreadsheet
+    
     console.log(`spreadsheet`, s)
 }

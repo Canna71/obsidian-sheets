@@ -52,7 +52,9 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
 
     // const filename = `/Users/gcannata/Documents/Obsidian Vault/Dev Vault/Dev/.obsidian/plugins/obsidian-sheetjs/SampleData.xlsx`;
 
-    const filename = `/stuff/Book1.xlsx`;
+    const filename = `/stuff/Book2.xls`;
+    // const filename = `/stuff/Items.csv`;
+    // const filename = `/stuff/Book1.xlsx`;
 
     const container = el.createDiv()
     // container.style.width = "100%";
@@ -121,6 +123,9 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     // see https://docs.sheetjs.com/docs/demos/grid/xs
     // https://docs.sheetjs.com/xspreadsheet/
     // https://github.com/myliang/x-spreadsheet
+    // https://forum.obsidian.md/t/saving-changes-in-codeblock-post-processor/47393
+    // https://codesandbox.io/s/x-spreadsheet-react-3v1bw?file=/src/Spreadsheet.js:527-774
+    // https://github.com/wolf-table/table
     // TODO: support other formats, not only binary
     // TODO: save into code block?
     // TODO: support $A$2

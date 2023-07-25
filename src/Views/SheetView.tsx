@@ -36,10 +36,17 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const containerWidth = Math.clamp((ctx as any).containerEl.offsetWidth, 200, 1400);
     const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
+    // TODO: check this actually exists
+    let bgColor = "#ffffff" ;
+    let fgColor = "#0a0a0a" ;
     const cel = document.getElementsByClassName("view-content")[0]
-    const styles = getComputedStyle(cel);
-    const bgColor = "#ffffff" || styles.getPropertyValue('background');
-    const fgColor = "#0a0a0a" || styles.getPropertyValue("color")
+    if(cel){
+        const styles = getComputedStyle(cel);
+        bgColor = "#ffffff" || styles.getPropertyValue('background');
+        fgColor = "#0a0a0a" || styles.getPropertyValue("color")
+    }
+    
+   
     // const font = "Sans Serifs" || styles.getPropertyValue('font');
 
     // if((ctx as any).containerEl.getElementsByClassName("x-spreadsheet").length){
@@ -160,7 +167,9 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
 
         })();
     }else {
-        s.loadData(stox(XLSX.read(data)))
+        if(data){
+            s.loadData(stox(XLSX.read(data)))
+        }
     }
 
     (ctx as any).spreadsheet = s;

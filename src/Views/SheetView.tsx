@@ -28,7 +28,14 @@ function resolve_book_type(fileName: string): XLSX.BookType {
     return bookType as XLSX.BookType;
 }
 
-
+function onElementRemoved(element, callback) {
+    new MutationObserver(function (mutations) {
+        if (!document.body.contains(element)) {
+            callback();
+            this.disconnect();
+        }
+    }).observe(element.parentElement, { childList: true });
+}
 
 export function processCodeBlock(source: string, el: HTMLElement, settings: SheetjsSettings, ctx: MarkdownPostProcessorContext) {
 
@@ -37,16 +44,16 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     const containerWidth = Math.clamp((ctx as any).containerEl.offsetWidth, 200, 1400);
     const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
     // TODO: check this actually exists
-    let bgColor = "#ffffff" ;
-    let fgColor = "#0a0a0a" ;
+    let bgColor = "#ffffff";
+    let fgColor = "#0a0a0a";
     const cel = document.getElementsByClassName("view-content")[0]
-    if(cel){
+    if (cel) {
         const styles = getComputedStyle(cel);
         bgColor = "#ffffff" || styles.getPropertyValue('background');
         fgColor = "#0a0a0a" || styles.getPropertyValue("color")
     }
-    
-   
+
+
     // const font = "Sans Serifs" || styles.getPropertyValue('font');
 
     // if((ctx as any).containerEl.getElementsByClassName("x-spreadsheet").length){
@@ -127,47 +134,55 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
                 // fs.writeFile(filename,bytes);
                 app.vault.adapter.writeBinary(filename, bytes)
             } else {
-             //                
+                //                
             }
- 
+
             // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
         }, 1000));
-        
-        if(!filename){
-            el.onblur =  (e)=>{
-                const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
-                const data = XLSX.write(wb, {
-                    bookType: "xlsx",
-                    type: "base64"
-                }); 
-                // view contains the editor to change the markdown
-                const view : MarkdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-                // the context contains the begin and end of the block in the markdown file
-                const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
-                // const lineno = sec?.lineStart + (i + 1);
-                // let line = view?.editor.getLine(lineno).split(",");
-                // line[j] = ev.currentTarget.value;
-                if(sec){
-                    const obj = {data}
-                    const yaml = stringifyYaml(obj)+"\n"
-                    view?.editor.replaceRange(yaml,{line:sec?.lineStart+1,ch:0},{line: sec?.lineEnd,ch: 0},"*")
-                    console.log("Data saved on code block")
-                }
-                }
 
-        } 
+    if (!filename) {
+        onElementRemoved((ctx as any).containerEl, function () {
+            console.log("yourElement was removed!");
+        });
+
+        el.addEventListener("remove", () => {
+            console.log("remove")
+        })
+ 
+        el.onblur = (e) => {
+            const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
+            const data = XLSX.write(wb, {
+                bookType: "xlsx",
+                type: "base64"
+            });
+            // view contains the editor to change the markdown
+            const view: MarkdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
+            // the context contains the begin and end of the block in the markdown file
+            const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
+            // const lineno = sec?.lineStart + (i + 1);
+            // let line = view?.editor.getLine(lineno).split(",");
+            // line[j] = ev.currentTarget.value;
+            if (sec) {
+                const obj = { data }
+                const yaml = stringifyYaml(obj) + "\n"
+                view?.editor.replaceRange(yaml, { line: sec?.lineStart + 1, ch: 0 }, { line: sec?.lineEnd, ch: 0 }, "*")
+                console.log("Data saved on code block")
+            }
+        }
+
+    }
 
     // TODO: wait for data to be loaded before creating the spreadsheet
     if (filename) {
         (async () => {
-            if(filename){
+            if (filename) {
                 const data = await app.vault.adapter.readBinary(filename)
                 s.loadData(stox(XLSX.read(data)));
-            } 
+            }
 
         })();
-    }else {
-        if(data){
+    } else {
+        if (data) {
             s.loadData(stox(XLSX.read(data)))
         }
     }

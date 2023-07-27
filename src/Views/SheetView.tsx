@@ -141,35 +141,8 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
         }, 1000));
 
     if (!filename) {
-        onElementRemoved((ctx as any).containerEl, function () {
-            console.log("yourElement was removed!");
-        });
-
-        el.addEventListener("remove", () => {
-            console.log("remove")
-        })
- 
-        el.onblur = (e) => {
-            const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
-            const data = XLSX.write(wb, {
-                bookType: "xlsx",
-                type: "base64"
-            });
-            // view contains the editor to change the markdown
-            const view: MarkdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-            // the context contains the begin and end of the block in the markdown file
-            const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
-            // const lineno = sec?.lineStart + (i + 1);
-            // let line = view?.editor.getLine(lineno).split(",");
-            // line[j] = ev.currentTarget.value;
-            if (sec) {
-                const obj = { data }
-                const yaml = stringifyYaml(obj) + "\n"
-                view?.editor.replaceRange(yaml, { line: sec?.lineStart + 1, ch: 0 }, { line: sec?.lineEnd, ch: 0 }, "*")
-                console.log("Data saved on code block")
-            }
-        }
-
+        // body > div.app-container > div.horizontal-main-container > div > div.workspace-split.mod-vertical.mod-root > div > div.workspace-tab-container > div.workspace-leaf.mod-active > div > div.view-content > div.markdown-source-view.cm-s-obsidian.mod-cm6.is-folding.is-live-preview.node-insert-event > div > div.cm-scroller > div.cm-sizer > div.cm-contentContainer > div > div.cm-preview-code-block.cm-embed-block.markdown-rendered > div.block-language-sheet > div > div > div.x-spreadsheet-toolbar > div > div:nth-child(3)
+        const toolbar = s.getElementBySelector(".x-spreadsheet-toolbar")
     }
 
     // TODO: wait for data to be loaded before creating the spreadsheet

@@ -8,19 +8,19 @@
 //     background: var(--background-primary);
 // }
 
-// div.x-spreadsheet-sheet
-//     > div.x-spreadsheet-overlayer
-//     > div
-//     > div.x-spreadsheet-editor
-//     > div
-//     > textarea {
-//     // background-color: #ffffff;
-//     background-color: var(--background-primary);
+div.x-spreadsheet-sheet
+    > div.x-spreadsheet-overlayer
+    > div
+    > div.x-spreadsheet-editor
+    > div
+    > textarea {
+    background-color: #ffffff;
+    // background-color: var(--background-primary);
 
-//     // color: #000000;
-//     color: var(--text-normal);
-//     box-shadow: inherit;
-// }
+    color: #000000;
+    // color: var(--text-normal);
+    box-shadow: inherit;
+}
 
 // .x-spreadsheet-tooltip {
 //     color: var(--text-normal);

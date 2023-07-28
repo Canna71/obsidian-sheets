@@ -38,13 +38,13 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     const containerWidth = Math.clamp((ctx as any).containerEl.offsetWidth, 200, 1400);
     const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
     // TODO: check this actually exists
-    let bgColor = "red";
-    let fgColor = "blue";
+    let bgColor = "#ffffff";
+    let fgColor = "#a0a0a0";
     const cel = document.getElementsByClassName("view-content")[0]
     if (cel) {
         const styles = getComputedStyle(cel);
-        bgColor = "red" || styles.getPropertyValue('background');
-        fgColor = "blue" || styles.getPropertyValue("color")
+        bgColor = bgColor || styles.getPropertyValue('background');
+        fgColor = fgColor || styles.getPropertyValue("color")
     }
 
 

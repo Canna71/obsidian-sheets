@@ -72,7 +72,7 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     // const filename = `/stuff/Book1.xlsx`;
 
     const container = el.createDiv()
-    // container.style.width = "100%";
+    container.style.width = containerWidth+"px";
     // container.style.height = "800px";
     // container.style.position="relative";
     // const root = createRoot(el);

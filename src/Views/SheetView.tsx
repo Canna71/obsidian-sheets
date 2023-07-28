@@ -38,13 +38,13 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
     const containerWidth = Math.clamp((ctx as any).containerEl.offsetWidth, 200, 1400);
     const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
     // TODO: check this actually exists
-    let bgColor = "#ffffff";
-    let fgColor = "#0a0a0a";
+    let bgColor = "red";
+    let fgColor = "blue";
     const cel = document.getElementsByClassName("view-content")[0]
     if (cel) {
         const styles = getComputedStyle(cel);
-        bgColor = "#ffffff" || styles.getPropertyValue('background');
-        fgColor = "#0a0a0a" || styles.getPropertyValue("color")
+        bgColor = "red" || styles.getPropertyValue('background');
+        fgColor = "blue" || styles.getPropertyValue("color")
     }
 
 
@@ -84,7 +84,7 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
         showContextmenu: true,
         view: {
             height: () => containerHeight,
-            width: () => containerWidth
+            width: () => (ctx as any).containerEl.offsetWidth
         },
 
         row: {
@@ -123,14 +123,15 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
                     onClick: (data, sheet) => {
                         console.log('click save button：', data, sheet)
                         const s = (ctx as any).spreadsheet;
-                        const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
-                        // const wb = xtos(data as any[]) as XLSX.WorkBook
-                        const dataToSave = XLSX.write(wb, {
-                            bookType: "xlsx",
-                            type: "base64"
-                            // bookType: "txt",
-                            // type: "string"
-                        });
+                        const dts = s.getData()
+                        // const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
+                        // // const wb = xtos(data as any[]) as XLSX.WorkBook
+                        // const dataToSave = XLSX.write(wb, {
+                        //     bookType: "xlsx",
+                        //     type: "base64"
+                        //     // bookType: "txt",
+                        //     // type: "string"
+                        // });
                         // view contains the editor to change the markdown
                         const view: MarkdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
                         // the context contains the begin and end of the block in the markdown file
@@ -139,7 +140,7 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
                         // let line = view?.editor.getLine(lineno).split(",");
                         // line[j] = ev.currentTarget.value;
                         if (sec) {
-                            const obj = { data: dataToSave }
+                            const obj = { data: dts }
                             const yaml = stringifyYaml(obj) + "\n"
                             view?.editor.replaceRange(yaml, { line: sec?.lineStart + 1, ch: 0 }, { line: sec?.lineEnd, ch: 0 }, "*")
                             console.log("Data saved on code block")
@@ -186,7 +187,7 @@ export function processCodeBlock(source: string, el: HTMLElement, settings: Shee
         })();
     } else {
         if (data) {
-            s.loadData(stox(XLSX.read(data)))
+            s.loadData(data)
         }
     }
 

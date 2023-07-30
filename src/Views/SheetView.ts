@@ -39,7 +39,7 @@ function resolve_book_type(fileName: string): XLSX.BookType {
 }
 
 const DEFAULT_OPTIONS = {
-    height: 400,
+    height: 500,
     width: "auto",
     rows: 100,
     cols: 26, 

@@ -1,3 +1,4 @@
+import { MarkdownView, Notice } from 'obsidian';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import * as React from "react";
 // import { createRoot } from "react-dom/client";
@@ -37,6 +38,11 @@ function resolve_book_type(fileName: string): XLSX.BookType {
     return bookType as XLSX.BookType;
 }
 
+const DEFAULT_OPTIONS = {
+    height: 400,
+    width: "auto"
+}
+
 interface SheetOptions {
     filename?: string;
     data?: any;
@@ -65,45 +71,30 @@ export function processCodeBlock(
         fgColor = fgColor || styles.getPropertyValue("color");
     }
 
-    // const font = "Sans Serifs" || styles.getPropertyValue('font');
+   
+    const options = {...DEFAULT_OPTIONS, parseYaml(source)};
 
-    // if((ctx as any).containerEl.getElementsByClassName("x-spreadsheet").length){
-    //     return;
-    // }
-
-    // const s = new Spreadsheet("#x-spreadsheet-demo")
-    // .loadData({}) // load data
-    // .change(data => {
-    //   // save data to db
-    // });
-
-    // data validation
-
-    // const filename = `/Users/gcannata/Documents/Obsidian Vault/Dev Vault/Dev/.obsidian/plugins/obsidian-sheetjs/SampleData.xlsx`;
-
-    const options = parseYaml(source) || {};
-
-    const { filename, data } = options;
-    // const filename = `/stuff/Items.csv`;
-    // const filename = `/stuff/Book1.xlsx`;
+    const { filename, data, height, width } = options;
+    
 
     const container = el//.createDiv();
     container.style.width = containerWidth + "px";
     if(container.parentElement){
         container.parentElement.style.overflow = "hidden";
     }
-    // container.style.height = "800px";
-    // container.style.position="relative";
-    // const root = createRoot(el);
+
+
+    const view = app.workspace.getActiveFileView();
+    const mode = view?.getMode() === "source" ? "edit" : "read";
 
     const spreadsheet_options: any = {
-        mode: "edit", // edit | read
+        mode, // edit | read
         showToolbar: true,
         showGrid: true,
         showContextmenu: true,
         view: {
-            height: () => (ctx as any).containerEl.offsetHeight,
-            width: () => (ctx as any).containerEl.offsetWidth,
+            height: () => height,
+            width: () => width === "auto" ? (ctx as any).containerEl.offsetWidth : width,
         },
 
         // row: {
@@ -185,21 +176,26 @@ export function processCodeBlock(
         const view: MarkdownView = 
             app.workspace.getActiveViewOfType(MarkdownView);
         // the context contains the begin and end of the block in the markdown file
-        const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
-        // const lineno = sec?.lineStart + (i + 1);
-        // let line = view?.editor.getLine(lineno).split(",");
-        // line[j] = ev.currentTarget.value;
-        if (sec) {
-            const obj = { data: dts };
-            const yaml = stringifyYaml(obj) + "\n";
-            view?.editor.replaceRange(
-                yaml,
-                { line: sec?.lineStart + 1, ch: 0 },
-                { line: sec?.lineEnd, ch: 0 },
-                "*"
-            );
-            console.log("Data saved on code block");
-        }
+        if(view.getMode() === "source") {
+            const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
+            // const lineno = sec?.lineStart + (i + 1);
+            // let line = view?.editor.getLine(lineno).split(",");
+            // line[j] = ev.currentTarget.value;
+            if (sec) {
+                const obj = { data: dts };
+                const yaml = stringifyYaml(obj) + "\n";
+                view?.editor.replaceRange(
+                    yaml,
+                    { line: sec?.lineStart + 1, ch: 0 },
+                    { line: sec?.lineEnd, ch: 0 },
+                    "*"
+                );
+                console.log("Data saved on code block");
+            }
+        } else { // preview
+            new Notice("Sheet not saved while in read mode");
+        } 
+        
     }
     // see https://docs.sheetjs.com/docs/demos/grid/xs
     // https://docs.sheetjs.com/xspreadsheet/
@@ -240,4 +236,6 @@ function createSpreadSheet(
                 // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
             }, 1000)
         );
+
+    return spreadSheet;
 }

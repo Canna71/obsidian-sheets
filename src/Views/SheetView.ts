@@ -40,7 +40,12 @@ function resolve_book_type(fileName: string): XLSX.BookType {
 
 const DEFAULT_OPTIONS = {
     height: 400,
-    width: "auto"
+    width: "auto",
+    rows: 100,
+    cols: 26, 
+    fontSize: 10,
+    cellHeight: 25,
+    cellWidth: 100
 }
 
 interface SheetOptions {
@@ -55,11 +60,7 @@ export function processCodeBlock(
     ctx: MarkdownPostProcessorContext
 ) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const containerWidth = Math.clamp(
-        (ctx as any).containerEl.offsetWidth,
-        200,
-        1400
-    );
+    
     // const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
     // TODO: check this actually exists
     let bgColor = "#ffffff";
@@ -72,18 +73,19 @@ export function processCodeBlock(
     }
 
    
-    const options = {...DEFAULT_OPTIONS, parseYaml(source)};
+    const options = {...DEFAULT_OPTIONS, ...parseYaml(source)};
 
-    const { filename, data, height, width } = options;
+    const { filename, height, width,rows, cols, fontSize, cellHeight, cellWidth } = options;
+    const containerWidth = () => width === "auto" ? (ctx as any).containerEl.offsetWidth || 1024 : width
     
 
     const container = el//.createDiv();
-    container.style.width = containerWidth + "px";
+    container.style.width = containerWidth() + "px";
     if(container.parentElement){
         container.parentElement.style.overflow = "hidden";
     }
 
-
+    // @ts-ignore
     const view = app.workspace.getActiveFileView();
     const mode = view?.getMode() === "source" ? "edit" : "read";
 
@@ -94,19 +96,20 @@ export function processCodeBlock(
         showContextmenu: true,
         view: {
             height: () => height,
-            width: () => width === "auto" ? (ctx as any).containerEl.offsetWidth : width,
+            width: () => {
+                const w  = containerWidth();
+                console.log(`cotainer width: ${w}`)
+                return w;
+            },
         },
-
-        // row: {
-        //     len:16,
-        //     height: 25,
-        // },
-        // col: {
-        //     len: 20,
-        //     width: 100,
-        //     indexWidth: 60,
-        //     minWidth: 60,
-        // },
+        row: {
+            len: rows,
+            height: cellHeight
+        },
+        col: {
+            len: cols,
+            width: cellWidth
+        },
         style: {
             bgcolor: bgColor,
             align: "left",
@@ -117,7 +120,7 @@ export function processCodeBlock(
             color: fgColor,
             font: {
                 // name: font,
-                size: 10,
+                size: fontSize,
                 bold: false,
                 italic: false,
             } as any,
@@ -136,7 +139,6 @@ export function processCodeBlock(
         };
     }
 
-    // TODO: wait for data to be loaded before creating the spreadsheet
     if (filename) {
         (async () => {
             const fileContent = await app.vault.adapter.readBinary(filename);
@@ -161,26 +163,13 @@ export function processCodeBlock(
     // (ctx as any).spreadsheet = s;
 
     function saveDataIntoBlock(data: any, sheet: any) {
-        console.log("click save button", data, sheet);
         const s = (ctx as any).spreadsheet;
         const dts = s.getData();
-        // const wb = xtos(s.getData() as any[]) as XLSX.WorkBook;
-        // // const wb = xtos(data as any[]) as XLSX.WorkBook
-        // const dataToSave = XLSX.write(wb, {
-        //     bookType: "xlsx",
-        //     type: "base64"
-        //     // bookType: "txt",
-        //     // type: "string"
-        // });
-        // view contains the editor to change the markdown
+        
         const view: MarkdownView = 
             app.workspace.getActiveViewOfType(MarkdownView);
-        // the context contains the begin and end of the block in the markdown file
         if(view.getMode() === "source") {
             const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
-            // const lineno = sec?.lineStart + (i + 1);
-            // let line = view?.editor.getLine(lineno).split(",");
-            // line[j] = ev.currentTarget.value;
             if (sec) {
                 const obj = { data: dts };
                 const yaml = stringifyYaml(obj) + "\n";
@@ -190,7 +179,7 @@ export function processCodeBlock(
                     { line: sec?.lineEnd, ch: 0 },
                     "*"
                 );
-                console.log("Data saved on code block");
+                console.info("Data saved on code block");
             }
         } else { // preview
             new Notice("Sheet not saved while in read mode");
@@ -203,10 +192,8 @@ export function processCodeBlock(
     // https://forum.obsidian.md/t/saving-changes-in-codeblock-post-processor/47393
     // https://codesandbox.io/s/x-spreadsheet-react-3v1bw?file=/src/Spreadsheet.js:527-774
     // https://github.com/wolf-table/table
-    // TODO: support other formats, not only binary
-    // TODO: save into code block?
-    // TODO: support $A$2
 }
+
 function createSpreadSheet(
     container: HTMLElement,
     spreadsheet_options: any,

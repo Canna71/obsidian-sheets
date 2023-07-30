@@ -160,6 +160,11 @@ div.x-spreadsheet-sheet
 //     background: var(--background-secondary);
 // }
 
-.x-spreadsheet-dimmer .active {
+div.x-spreadsheet {
+    overflow: hidden;
+}
+
+.x-spreadsheet-dimmer.active {
     display: none;
+    z-index: -1;
 }

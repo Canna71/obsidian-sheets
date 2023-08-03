@@ -173,3 +173,10 @@ ul.x-spreadsheet-menu {
     padding: 0px;
     margin: 0px;
 }
+
+ div.x-spreadsheet-toolbar  div.x-spreadsheet-icon {
+    cursor: pointer;
+    img {
+        cursor: pointer;
+    }
+ }

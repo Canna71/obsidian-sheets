@@ -1,4 +1,3 @@
-import { MarkdownView, Notice } from 'obsidian';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import * as React from "react";
 // import { createRoot } from "react-dom/client";
@@ -8,6 +7,7 @@ import {
     debounce,
     parseYaml,
     stringifyYaml,
+    Notice
 } from "obsidian";
 import { SheetjsSettings } from "src/Settings";
 import Spreadsheet from "x-data-spreadsheet";
@@ -39,7 +39,7 @@ function resolve_book_type(fileName: string): XLSX.BookType {
 }
 
 const DEFAULT_OPTIONS = {
-    height: 500,
+    height: 540,
     width: "auto",
     rows: 100,
     cols: 26, 
@@ -127,6 +127,9 @@ export function processCodeBlock(
                 italic: false,
             } as any,
         },
+        // onKeyDown: (evt) => {
+        //     console.log(`my own keydown`, evt);
+        // }
     };
 
     if (!filename) {
@@ -135,7 +138,8 @@ export function processCodeBlock(
                 {
                     tip: "Save",
                     icon: saveIcon,
-                    onClick: saveDataIntoBlock,
+                    shortcut: "Ctrl+S",
+                    onClick: (s,d) =>saveDataIntoBlock(s,d,ctx),
                 },
             ],
         };
@@ -150,7 +154,8 @@ export function processCodeBlock(
             (ctx as any).spreadsheet = createSpreadSheet(
                 container,
                 spreadsheet_options,
-                { ...options, data }
+                { ...options, data },
+                ctx
             );
             // .loadData();
         })();
@@ -158,36 +163,14 @@ export function processCodeBlock(
         (ctx as any).spreadsheet = createSpreadSheet(
             container,
             spreadsheet_options,
-            {...options}
+            {...options},
+            ctx
         ); 
     }
 
     // (ctx as any).spreadsheet = s;
 
-    function saveDataIntoBlock(data: any, sheet: any) {
-        const s = (ctx as any).spreadsheet;
-        const dts = s.getData();
-        
-        const view: MarkdownView = 
-            app.workspace.getActiveViewOfType(MarkdownView);
-        if(view.getMode() === "source") {
-            const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
-            if (sec) {
-                const obj = { data: dts };
-                const yaml = stringifyYaml(obj) + "\n";
-                view?.editor.replaceRange(
-                    yaml,
-                    { line: sec?.lineStart + 1, ch: 0 },
-                    { line: sec?.lineEnd, ch: 0 },
-                    "*"
-                );
-                console.info("Data saved on code block");
-            }
-        } else { // preview
-            new Notice("Sheet not saved while in read mode");
-        } 
-        
-    }
+
     // see https://docs.sheetjs.com/docs/demos/grid/xs
     // https://docs.sheetjs.com/xspreadsheet/
     // https://github.com/myliang/x-spreadsheet
@@ -196,10 +179,36 @@ export function processCodeBlock(
     // https://github.com/wolf-table/table
 }
 
+function saveDataIntoBlock(data: any, sheet: any, ctx: MarkdownPostProcessorContext) {
+    const s = (ctx as any).spreadsheet;
+    const dts = s.getData();
+    
+    const view: MarkdownView = 
+        app.workspace.getActiveViewOfType(MarkdownView);
+    if(view.getMode() === "source") {
+        const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
+        if (sec) {
+            const obj = { data: dts };
+            const yaml = stringifyYaml(obj) + "\n";
+            view?.editor.replaceRange(
+                yaml,
+                { line: sec?.lineStart + 1, ch: 0 },
+                { line: sec?.lineEnd, ch: 0 },
+                "*"
+            );
+            console.info("Data saved on code block");
+        }
+    } else { // preview
+        new Notice("Sheet not saved while in read mode");
+    } 
+    
+}
+
 function createSpreadSheet(
     container: HTMLElement,
     spreadsheet_options: any,
-    options: SheetOptions
+    options: SheetOptions,
+    ctx: MarkdownPostProcessorContext
 ) {
     const spreadSheet =
      new Spreadsheet(container, spreadsheet_options)
@@ -220,7 +229,10 @@ function createSpreadSheet(
                     // fs.writeFile(filename,bytes);
                     app.vault.adapter.writeBinary(options.filename, bytes);
                     console.log(`data saved tp ${options.filename}`)
-                } 
+                } else {
+                    // tentative
+                    // saveDataIntoBlock(null,null,ctx)
+                }
 
                 // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
             }, 1000)

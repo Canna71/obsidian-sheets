@@ -73,6 +73,8 @@ export function processCodeBlock(
     }
 
    
+    if((ctx as any).spreadsheet) return;
+
     const options = {...DEFAULT_OPTIONS, ...parseYaml(source)};
 
     const { filename, height, width,rows, cols, fontSize, cellHeight, cellWidth } = options;

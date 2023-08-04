@@ -150,7 +150,7 @@ export function processCodeBlock(
                     tip: "Save",
                     icon: saveIcon,
                     shortcut: "Ctrl+S",
-                    onClick: (s, d) => saveDataIntoBlock(s, d, ctx),
+                    onClick: (s: any, d: any) => saveDataIntoBlock(s, d, ctx),
                 },
             ],
         };
@@ -162,15 +162,15 @@ export function processCodeBlock(
 
             const xlsx = XLSX.read(fileContent, {
                 cellStyles: true,
-                sheetStubs: true // >
+                sheetStubs: true, // >
             });
             const workbook = new ExcelJS.Workbook();
-            
-            const excelWorkbook = await workbook.xlsx.load(fileContent)
+
+            const excelWorkbook = await workbook.xlsx.load(fileContent);
 
             const data2 = toSpreadsheet(excelWorkbook);
 
-
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const data = stox(xlsx);
             (ctx as any).spreadsheet = createSpreadSheet(
                 container,
@@ -207,7 +207,8 @@ function saveDataIntoBlock(
     const s = (ctx as any).spreadsheet;
     const dts = s.getData();
 
-    const view: MarkdownView = app.workspace.getActiveViewOfType(MarkdownView);
+    const view = app.workspace.getActiveViewOfType(MarkdownView);
+    if (!view) return;
     if (view.getMode() === "source") {
         const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
         if (sec) {
@@ -251,7 +252,7 @@ function createSpreadSheet(
                     type: "buffer",
                     compression: true,
                     bookSST: true,
-                    cellStyles: true
+                    cellStyles: true,
                 });
                 // fs.writeFile(filename,bytes);
                 app.vault.adapter.writeBinary(options.filename, bytes);
@@ -270,11 +271,11 @@ function createSpreadSheet(
 
 function applyStyles(ssdata: any, wb: XLSX.WorkBook) {
     console.log(ssdata, wb);
-    for (let sheet of ssdata) {
+    for (const sheet of ssdata) {
         const { name, styles, rows } = sheet;
-        for (let rowId in rows) {
+        for (const rowId in rows) {
             const cells = rows[rowId]["cells"];
-            for (let cellId in cells) {
+            for (const cellId in cells) {
                 const cell = cells[cellId];
                 if (cell.style !== undefined) {
                     const wbStyle = styleSS2WB(styles[cell.style]);

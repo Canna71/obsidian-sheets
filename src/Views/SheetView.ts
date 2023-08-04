@@ -285,10 +285,6 @@ function applyStyles(ssdata: any, wb: XLSX.WorkBook) {
                         c: Number(cellId),
                     });
                     wb.Sheets[name][cellRef].s = wbStyle;
-                    console.log(
-                        `Cell (${cellId},${rowId})=>${cellRef} has style `,
-                        wbStyle
-                    );
                 }
             }
         }

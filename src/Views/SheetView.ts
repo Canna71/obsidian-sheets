@@ -7,7 +7,7 @@ import {
     debounce,
     parseYaml,
     stringifyYaml,
-    Notice
+    Notice,
 } from "obsidian";
 import { SheetjsSettings } from "src/Settings";
 import Spreadsheet from "x-data-spreadsheet";
@@ -42,11 +42,11 @@ const DEFAULT_OPTIONS = {
     height: 540,
     width: "auto",
     rows: 100,
-    cols: 26, 
+    cols: 26,
     fontSize: 10,
     cellHeight: 25,
-    cellWidth: 100
-}
+    cellWidth: 100,
+};
 
 interface SheetOptions {
     filename?: string;
@@ -60,11 +60,11 @@ export function processCodeBlock(
     ctx: MarkdownPostProcessorContext
 ) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    
+
     // const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
     // TODO: check this actually exists
     let bgColor = "#ffffff";
-    let fgColor = "#000"//"#a0a0a0";
+    let fgColor = "#000"; //"#a0a0a0";
     const cel = document.getElementsByClassName("view-content")[0];
     if (cel) {
         const styles = getComputedStyle(cel);
@@ -72,18 +72,26 @@ export function processCodeBlock(
         fgColor = fgColor || styles.getPropertyValue("color");
     }
 
-   
-    if((ctx as any).spreadsheet) return;
+    if ((ctx as any).spreadsheet) return;
 
-    const options = {...DEFAULT_OPTIONS, ...parseYaml(source)};
+    const options = { ...DEFAULT_OPTIONS, ...parseYaml(source) };
 
-    const { filename, height, width,rows, cols, fontSize, cellHeight, cellWidth } = options;
-    const containerWidth = () => width === "auto" ? (ctx as any).containerEl.offsetWidth || 1024 : width
-    
+    const {
+        filename,
+        height,
+        width,
+        rows,
+        cols,
+        fontSize,
+        cellHeight,
+        cellWidth,
+    } = options;
+    const containerWidth = () =>
+        width === "auto" ? (ctx as any).containerEl.offsetWidth || 1024 : width;
 
-    const container = el//.createDiv();
+    const container = el; //.createDiv();
     container.style.width = containerWidth() + "px";
-    if(container.parentElement){
+    if (container.parentElement) {
         container.parentElement.style.overflow = "hidden";
     }
 
@@ -99,18 +107,18 @@ export function processCodeBlock(
         view: {
             height: () => height,
             width: () => {
-                const w  = containerWidth();
-                console.log(`cotainer width: ${w}`)
+                const w = containerWidth();
+                // console.log(`cotainer width: ${w}`)
                 return w;
             },
         },
         row: {
             len: rows,
-            height: cellHeight
+            height: cellHeight,
         },
         col: {
             len: cols,
-            width: cellWidth
+            width: cellWidth,
         },
         style: {
             bgcolor: bgColor,
@@ -139,7 +147,7 @@ export function processCodeBlock(
                     tip: "Save",
                     icon: saveIcon,
                     shortcut: "Ctrl+S",
-                    onClick: (s,d) =>saveDataIntoBlock(s,d,ctx),
+                    onClick: (s, d) => saveDataIntoBlock(s, d, ctx),
                 },
             ],
         };
@@ -148,9 +156,13 @@ export function processCodeBlock(
     if (filename) {
         (async () => {
             const fileContent = await app.vault.adapter.readBinary(filename);
-            const data = stox(XLSX.read(fileContent,{
-                cellStyles: true
-            }));
+
+            const xlsx = XLSX.read(fileContent, {
+                cellStyles: true,
+                sheetStubs: true // >
+            });
+
+            const data = stox(xlsx);
             (ctx as any).spreadsheet = createSpreadSheet(
                 container,
                 spreadsheet_options,
@@ -163,13 +175,12 @@ export function processCodeBlock(
         (ctx as any).spreadsheet = createSpreadSheet(
             container,
             spreadsheet_options,
-            {...options},
+            { ...options },
             ctx
-        ); 
+        );
     }
 
     // (ctx as any).spreadsheet = s;
-
 
     // see https://docs.sheetjs.com/docs/demos/grid/xs
     // https://docs.sheetjs.com/xspreadsheet/
@@ -179,13 +190,16 @@ export function processCodeBlock(
     // https://github.com/wolf-table/table
 }
 
-function saveDataIntoBlock(data: any, sheet: any, ctx: MarkdownPostProcessorContext) {
+function saveDataIntoBlock(
+    data: any,
+    sheet: any,
+    ctx: MarkdownPostProcessorContext
+) {
     const s = (ctx as any).spreadsheet;
     const dts = s.getData();
-    
-    const view: MarkdownView = 
-        app.workspace.getActiveViewOfType(MarkdownView);
-    if(view.getMode() === "source") {
+
+    const view: MarkdownView = app.workspace.getActiveViewOfType(MarkdownView);
+    if (view.getMode() === "source") {
         const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
         if (sec) {
             const obj = { data: dts };
@@ -198,10 +212,10 @@ function saveDataIntoBlock(data: any, sheet: any, ctx: MarkdownPostProcessorCont
             );
             console.info("Data saved on code block");
         }
-    } else { // preview
+    } else {
+        // preview
         new Notice("Sheet not saved while in read mode");
-    } 
-    
+    }
 }
 
 function createSpreadSheet(
@@ -210,33 +224,79 @@ function createSpreadSheet(
     options: SheetOptions,
     ctx: MarkdownPostProcessorContext
 ) {
-    const spreadSheet =
-     new Spreadsheet(container, spreadsheet_options)
-        .loadData(options.data || {});
-        spreadSheet.change(
-            debounce((data) => {
-                // save data
-                // console.log(data)
-                if (options.filename) {
-                    const wb = xtos(spreadSheet.getData() as any[]) as XLSX.WorkBook;
-                    const bookType = resolve_book_type(options.filename);
-                    const bytes = XLSX.write(wb, {
-                        bookType: bookType,
-                        type: "buffer",
-                        compression: true,
-                        bookSST: true
-                    });
-                    // fs.writeFile(filename,bytes);
-                    app.vault.adapter.writeBinary(options.filename, bytes);
-                    console.log(`data saved tp ${options.filename}`)
-                } else {
-                    // tentative
-                    // saveDataIntoBlock(null,null,ctx)
-                }
+    const spreadSheet = new Spreadsheet(
+        container,
+        spreadsheet_options
+    ).loadData(options.data || {});
+    spreadSheet.change(
+        debounce((data) => {
+            // save data
+            // console.log(data)
+            if (options.filename) {
+                const spreadsheetData = spreadSheet.getData() as any[];
+                const wb = xtos(spreadsheetData) as XLSX.WorkBook;
+                applyStyles(spreadsheetData, wb);
+                const bookType = resolve_book_type(options.filename);
+                const bytes = XLSX.write(wb, {
+                    bookType: bookType,
+                    type: "buffer",
+                    compression: true,
+                    bookSST: true,
+                    cellStyles: true
+                });
+                // fs.writeFile(filename,bytes);
+                app.vault.adapter.writeBinary(options.filename, bytes);
+                console.log(`data saved tp ${options.filename}`);
+            } else {
+                // tentative
+                // saveDataIntoBlock(null,null,ctx)
+            }
 
-                // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
-            }, 1000)
-        );
+            // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
+        }, 1000)
+    );
 
     return spreadSheet;
+}
+
+function applyStyles(ssdata: any, wb: XLSX.WorkBook) {
+    console.log(ssdata, wb);
+    for (let sheet of ssdata) {
+        const { name, styles, rows } = sheet;
+        for (let rowId in rows) {
+            const cells = rows[rowId]["cells"];
+            for (let cellId in cells) {
+                const cell = cells[cellId];
+                if (cell.style !== undefined) {
+                    const wbStyle = styleSS2WB(styles[cell.style]);
+                    //TODO: apply to the right WB cell
+                    const cellRef = XLSX.utils.encode_cell({
+                        r: Number(rowId),
+                        c: Number(cellId),
+                    });
+                    wb.Sheets[name][cellRef].s = wbStyle;
+                    console.log(
+                        `Cell (${cellId},${rowId})=>${cellRef} has style `,
+                        wbStyle
+                    );
+                }
+            }
+        }
+    }
+}
+
+function styleSS2WB(ssstyle: any) {
+    const style: any = { patternType: "solid" };
+    if (ssstyle.bgcolor) {
+        style.bgColor = {
+            rgb: ssstyle.bgcolor.substring(1),
+        };
+    }
+
+    if (ssstyle.color) {
+        style.fgColor = {
+            rgb: ssstyle.color.substring(1),
+        };
+    }
+    return style;
 }

@@ -1,0 +1,192 @@
+[
+    {
+        "name": "Sheet1",
+        "freeze": "A1",
+        "styles": [
+            {
+                "bgcolor": "#fff2cd"
+            },
+            {
+                "bgcolor": "#d9e2f3"
+            }
+        ],
+        "merges": [],
+        "rows": {
+            "0": {
+                "cells": {
+                    "0": {
+                        "text": "Item"
+                    },
+                    "1": {
+                        "text": "Cost"
+                    },
+                    "2": {
+                        "text": "Qty"
+                    },
+                    "3": {
+                        "text": "Price"
+                    }
+                }
+            },
+            "1": {
+                "cells": {
+                    "0": {
+                        "text": "Laser",
+                        "style": 0
+                    },
+                    "1": {
+                        "text": "100",
+                        "style": 0
+                    },
+                    "2": {
+                        "text": "2",
+                        "style": 0
+                    },
+                    "3": {
+                        "text": "=B2*C2",
+                        "style": 0
+                    }
+                }
+            },
+            "2": {
+                "cells": {
+                    "0": {
+                        "text": "Gun",
+                        "style": 0
+                    },
+                    "1": {
+                        "text": "123",
+                        "style": 0
+                    },
+                    "2": {
+                        "text": "3",
+                        "style": 0
+                    },
+                    "3": {
+                        "text": "=B3*C3",
+                        "style": 0
+                    }
+                }
+            },
+            "3": {
+                "cells": {
+                    "0": {
+                        "text": "Some",
+                        "style": 0
+                    },
+                    "1": {
+                        "text": "234",
+                        "style": 0
+                    },
+                    "2": {
+                        "text": "1",
+                        "style": 0
+                    },
+                    "3": {
+                        "text": "=B4*C4",
+                        "style": 0
+                    }
+                }
+            },
+            "4": {
+                "cells": {
+                    "0": {
+                        "style": 0
+                    },
+                    "1": {
+                        "style": 0
+                    },
+                    "2": {
+                        "text": "3",
+                        "style": 0
+                    },
+                    "3": {
+                        "text": "=B5*C5",
+                        "style": 0
+                    }
+                }
+            },
+            "5": {
+                "cells": {
+                    "0": {
+                        "style": 0
+                    },
+                    "1": {
+                        "style": 0
+                    },
+                    "2": {
+                        "style": 0
+                    },
+                    "3": {
+                        "text": "=B6*C6",
+                        "style": 0
+                    }
+                }
+            },
+            "6": {
+                "cells": {
+                    "0": {
+                        "style": 0
+                    },
+                    "1": {
+                        "style": 0
+                    },
+                    "2": {
+                        "style": 0
+                    },
+                    "3": {
+                        "text": "=B7*C7",
+                        "style": 0
+                    }
+                }
+            },
+            "7": {
+                "cells": {
+                    "0": {
+                        "style": 0
+                    },
+                    "1": {
+                        "style": 0
+                    },
+                    "2": {
+                        "style": 0
+                    },
+                    "3": {
+                        "text": "=SUM(D2:D7)",
+                        "style": 0
+                    }
+                }
+            },
+            "len": 100
+        },
+        "cols": {
+            "len": 26
+        },
+        "validations": [],
+        "autofilter": {}
+    },
+    {
+        "name": "sheet3",
+        "freeze": "A1",
+        "styles": [],
+        "merges": [],
+        "rows": {
+            "0": {
+                "cells": {
+                    "0": {
+                        "text": "12"
+                    },
+                    "1": {
+                        "text": "23"
+                    }
+                }
+            },
+            "len": 100
+        },
+        "cols": {
+            "len": 26
+        },
+        "validations": [],
+        "autofilter": {}
+    }
+]

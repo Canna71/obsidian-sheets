@@ -1,0 +1,698 @@
+{
+    "opts": {
+        "Date1904": false,
+        "CalcPrecision": true,
+        "RefreshAll": false,
+        "FullCalc": false,
+        "CalcMode": 1,
+        "CalcCount": 100,
+        "CalcIter": false,
+        "CalcDelta": 0.001,
+        "CalcSaveRecalc": true
+    },
+    "SheetNames": [
+        "Sheet1",
+        "sheet3"
+    ],
+    "Sheets": {
+        "Sheet1": {
+            "!margins": {
+                "left": 0.75,
+                "right": 0.75,
+                "top": 1,
+                "bottom": 1,
+                "header": 0.5,
+                "footer": 0.5
+            },
+            "A1": {
+                "v": "Item",
+                "t": "s",
+                "z": "General",
+                "w": "Item"
+            },
+            "B1": {
+                "v": "Cost",
+                "t": "s",
+                "z": "General",
+                "w": "Cost"
+            },
+            "C1": {
+                "v": "Qty",
+                "t": "s",
+                "z": "General",
+                "w": "Qty"
+            },
+            "D1": {
+                "v": "Price",
+                "t": "s",
+                "z": "General",
+                "w": "Price"
+            },
+            "A2": {
+                "v": "Laser",
+                "t": "s",
+                "z": "General",
+                "w": "Laser",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "B2": {
+                "v": 100,
+                "t": "n",
+                "z": "General",
+                "w": "100",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "C2": {
+                "v": 2,
+                "t": "n",
+                "z": "General",
+                "w": "2",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "D2": {
+                "v": "=B2*C2",
+                "t": "s",
+                "z": "General",
+                "w": "=B2*C2",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "A3": {
+                "v": "Gun",
+                "t": "s",
+                "z": "General",
+                "w": "Gun",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "B3": {
+                "v": 123,
+                "t": "n",
+                "z": "General",
+                "w": "123",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "C3": {
+                "v": 3,
+                "t": "n",
+                "z": "General",
+                "w": "3",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "D3": {
+                "v": "=B3*C3",
+                "t": "s",
+                "z": "General",
+                "w": "=B3*C3",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "A4": {
+                "v": "Some",
+                "t": "s",
+                "z": "General",
+                "w": "Some",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "B4": {
+                "v": 234,
+                "t": "n",
+                "z": "General",
+                "w": "234",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "C4": {
+                "v": 1,
+                "t": "n",
+                "z": "General",
+                "w": "1",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "D4": {
+                "v": "=B4*C4",
+                "t": "s",
+                "z": "General",
+                "w": "=B4*C4",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "A5": {
+                "t": "z"
+            },
+            "B5": {
+                "t": "z"
+            },
+            "C5": {
+                "v": 3,
+                "t": "n",
+                "z": "General",
+                "w": "3"
+            },
+            "D5": {
+                "v": "=B5*C5",
+                "t": "s",
+                "z": "General",
+                "w": "=B5*C5"
+            },
+            "A6": {
+                "t": "z"
+            },
+            "B6": {
+                "t": "z"
+            },
+            "C6": {
+                "t": "z"
+            },
+            "D6": {
+                "v": "=B6*C6",
+                "t": "s",
+                "z": "General",
+                "w": "=B6*C6"
+            },
+            "A7": {
+                "t": "z"
+            },
+            "B7": {
+                "t": "z"
+            },
+            "C7": {
+                "t": "z"
+            },
+            "D7": {
+                "v": "=B7*C7",
+                "t": "s",
+                "z": "General",
+                "w": "=B7*C7"
+            },
+            "A8": {
+                "t": "z"
+            },
+            "B8": {
+                "t": "z"
+            },
+            "C8": {
+                "t": "z"
+            },
+            "D8": {
+                "v": "=SUM(D2:D7)",
+                "t": "s",
+                "z": "General",
+                "w": "=SUM(D2:D7)"
+            },
+            "!ref": "A1:D8"
+        },
+        "sheet3": {
+            "!margins": {
+                "left": 0.75,
+                "right": 0.75,
+                "top": 1,
+                "bottom": 1,
+                "header": 0.5,
+                "footer": 0.5
+            },
+            "A1": {
+                "v": 12,
+                "t": "n",
+                "z": "General",
+                "w": "12"
+            },
+            "B1": {
+                "v": 23,
+                "t": "n",
+                "z": "General",
+                "w": "23"
+            },
+            "A2": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "B2": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "C2": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "D2": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "A3": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "B3": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "C3": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "D3": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "A4": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "B4": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "C4": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "D4": {
+                "t": "z",
+                "s": {
+                    "patternType": "solid",
+                    "fgColor": {
+                        "rgb": "CCFFCC"
+                    },
+                    "bgColor": {
+                        "rgb": "000000"
+                    }
+                }
+            },
+            "!ref": "A1:D4"
+        }
+    },
+    "Preamble": {
+        "!protect": false
+    },
+    "Strings": [
+        {
+            "t": "Item",
+            "raw": "<t>Item</t>",
+            "r": "Item"
+        },
+        {
+            "t": "Cost",
+            "raw": "<t>Cost</t>",
+            "r": "Cost"
+        },
+        {
+            "t": "Qty",
+            "raw": "<t>Qty</t>",
+            "r": "Qty"
+        },
+        {
+            "t": "Price",
+            "raw": "<t>Price</t>",
+            "r": "Price"
+        },
+        {
+            "t": "Laser",
+            "raw": "<t>Laser</t>",
+            "r": "Laser"
+        },
+        {
+            "t": "=B2*C2",
+            "raw": "<t>=B2*C2</t>",
+            "r": "=B2*C2"
+        },
+        {
+            "t": "Gun",
+            "raw": "<t>Gun</t>",
+            "r": "Gun"
+        },
+        {
+            "t": "=B3*C3",
+            "raw": "<t>=B3*C3</t>",
+            "r": "=B3*C3"
+        },
+        {
+            "t": "Some",
+            "raw": "<t>Some</t>",
+            "r": "Some"
+        },
+        {
+            "t": "=B4*C4",
+            "raw": "<t>=B4*C4</t>",
+            "r": "=B4*C4"
+        },
+        {
+            "t": "=B5*C5",
+            "raw": "<t>=B5*C5</t>",
+            "r": "=B5*C5"
+        },
+        {
+            "t": "=B6*C6",
+            "raw": "<t>=B6*C6</t>",
+            "r": "=B6*C6"
+        },
+        {
+            "t": "=B7*C7",
+            "raw": "<t>=B7*C7</t>",
+            "r": "=B7*C7"
+        },
+        {
+            "t": "=SUM(D2:D7)",
+            "raw": "<t>=SUM(D2:D7)</t>",
+            "r": "=SUM(D2:D7)"
+        }
+    ],
+    "SSF": {
+        "0": "General",
+        "1": "0",
+        "2": "0.00",
+        "3": "#,##0",
+        "4": "#,##0.00",
+        "5": "#,##0\\ \"€\";\\-#,##0\\ \"€\"",
+        "6": "#,##0\\ \"€\";[Red]\\-#,##0\\ \"€\"",
+        "7": "#,##0.00\\ \"€\";\\-#,##0.00\\ \"€\"",
+        "8": "#,##0.00\\ \"€\";[Red]\\-#,##0.00\\ \"€\"",
+        "9": "0%",
+        "10": "0.00%",
+        "11": "0.00E+00",
+        "12": "# ?/?",
+        "13": "# ??/??",
+        "14": "m/d/yy",
+        "15": "d-mmm-yy",
+        "16": "d-mmm",
+        "17": "mmm-yy",
+        "18": "h:mm AM/PM",
+        "19": "h:mm:ss AM/PM",
+        "20": "h:mm",
+        "21": "h:mm:ss",
+        "22": "m/d/yy h:mm",
+        "37": "#,##0 ;(#,##0)",
+        "38": "#,##0 ;[Red](#,##0)",
+        "39": "#,##0.00;(#,##0.00)",
+        "40": "#,##0.00;[Red](#,##0.00)",
+        "41": "_-* #,##0_-;\\-* #,##0_-;_-* \"-\"_-;_-@_-",
+        "42": "_-* #,##0\\ \"€\"_-;\\-* #,##0\\ \"€\"_-;_-* \"-\"\\ \"€\"_-;_-@_-",
+        "43": "_-* #,##0.00_-;\\-* #,##0.00_-;_-* \"-\"??_-;_-@_-",
+        "44": "_-* #,##0.00\\ \"€\"_-;\\-* #,##0.00\\ \"€\"_-;_-* \"-\"??\\ \"€\"_-;_-@_-",
+        "45": "mm:ss",
+        "46": "[h]:mm:ss",
+        "47": "mmss.0",
+        "48": "##0.0E+0",
+        "49": "@",
+        "56": "\"上午/下午 \"hh\"時\"mm\"分\"ss\"秒 \"",
+        "164": "\"上午/下午 \"hh\"時\"mm\"分\"ss\"秒 \""
+    },
+    "Themes": {
+        "themeElements": {
+            "clrScheme": [
+                {
+                    "name": "lt1",
+                    "rgb": "FFFFFF"
+                },
+                {
+                    "name": "dk1",
+                    "rgb": "000000"
+                },
+                {
+                    "name": "lt2",
+                    "rgb": "E7E6E6"
+                },
+                {
+                    "name": "dk2",
+                    "rgb": "44546A"
+                },
+                {
+                    "name": "accent1",
+                    "rgb": "4472C4"
+                },
+                {
+                    "name": "accent2",
+                    "rgb": "ED7D31"
+                },
+                {
+                    "name": "accent3",
+                    "rgb": "A5A5A5"
+                },
+                {
+                    "name": "accent4",
+                    "rgb": "FFC000"
+                },
+                {
+                    "name": "accent5",
+                    "rgb": "5B9BD5"
+                },
+                {
+                    "name": "accent6",
+                    "rgb": "70AD47"
+                },
+                {
+                    "name": "hlink",
+                    "rgb": "0563C1"
+                },
+                {
+                    "name": "folHlink",
+                    "rgb": "954F72"
+                }
+            ]
+        },
+        "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<a:theme xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" name=\"Office Theme\"><a:themeElements><a:clrScheme name=\"Office\"><a:dk1><a:sysClr val=\"windowText\" lastClr=\"000000\"/></a:dk1><a:lt1><a:sysClr val=\"window\" lastClr=\"FFFFFF\"/></a:lt1><a:dk2><a:srgbClr val=\"44546A\"/></a:dk2><a:lt2><a:srgbClr val=\"E7E6E6\"/></a:lt2><a:accent1><a:srgbClr val=\"4472C4\"/></a:accent1><a:accent2><a:srgbClr val=\"ED7D31\"/></a:accent2><a:accent3><a:srgbClr val=\"A5A5A5\"/></a:accent3><a:accent4><a:srgbClr val=\"FFC000\"/></a:accent4><a:accent5><a:srgbClr val=\"5B9BD5\"/></a:accent5><a:accent6><a:srgbClr val=\"70AD47\"/></a:accent6><a:hlink><a:srgbClr val=\"0563C1\"/></a:hlink><a:folHlink><a:srgbClr val=\"954F72\"/></a:folHlink></a:clrScheme><a:fontScheme name=\"Office\"><a:majorFont><a:latin typeface=\"Calibri Light\" panose=\"020F0302020204030204\"/><a:ea typeface=\"\"/><a:cs typeface=\"\"/><a:font script=\"Jpan\" typeface=\"æ¸¸ã´ã·ãã¯ Light\"/><a:font script=\"Hang\" typeface=\"ë§ì ê³ ë\"/><a:font script=\"Hans\" typeface=\"ç­çº¿ Light\"/><a:font script=\"Hant\" typeface=\"æ°ç´°æé«\"/><a:font script=\"Arab\" typeface=\"Times New Roman\"/><a:font script=\"Hebr\" typeface=\"Times New Roman\"/><a:font script=\"Thai\" typeface=\"Tahoma\"/><a:font script=\"Ethi\" typeface=\"Nyala\"/><a:font script=\"Beng\" typeface=\"Vrinda\"/><a:font script=\"Gujr\" typeface=\"Shruti\"/><a:font script=\"Khmr\" typeface=\"MoolBoran\"/><a:font script=\"Knda\" typeface=\"Tunga\"/><a:font script=\"Guru\" typeface=\"Raavi\"/><a:font script=\"Cans\" typeface=\"Euphemia\"/><a:font script=\"Cher\" typeface=\"Plantagenet Cherokee\"/><a:font script=\"Yiii\" typeface=\"Microsoft Yi Baiti\"/><a:font script=\"Tibt\" typeface=\"Microsoft Himalaya\"/><a:font script=\"Thaa\" typeface=\"MV Boli\"/><a:font script=\"Deva\" typeface=\"Mangal\"/><a:font script=\"Telu\" typeface=\"Gautami\"/><a:font script=\"Taml\" typeface=\"Latha\"/><a:font script=\"Syrc\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Orya\" typeface=\"Kalinga\"/><a:font script=\"Mlym\" typeface=\"Kartika\"/><a:font script=\"Laoo\" typeface=\"DokChampa\"/><a:font script=\"Sinh\" typeface=\"Iskoola Pota\"/><a:font script=\"Mong\" typeface=\"Mongolian Baiti\"/><a:font script=\"Viet\" typeface=\"Times New Roman\"/><a:font script=\"Uigh\" typeface=\"Microsoft Uighur\"/><a:font script=\"Geor\" typeface=\"Sylfaen\"/><a:font script=\"Armn\" typeface=\"Arial\"/><a:font script=\"Bugi\" typeface=\"Leelawadee UI\"/><a:font script=\"Bopo\" typeface=\"Microsoft JhengHei\"/><a:font script=\"Java\" typeface=\"Javanese Text\"/><a:font script=\"Lisu\" typeface=\"Segoe UI\"/><a:font script=\"Mymr\" typeface=\"Myanmar Text\"/><a:font script=\"Nkoo\" typeface=\"Ebrima\"/><a:font script=\"Olck\" typeface=\"Nirmala UI\"/><a:font script=\"Osma\" typeface=\"Ebrima\"/><a:font script=\"Phag\" typeface=\"Phagspa\"/><a:font script=\"Syrn\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Syrj\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Syre\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Sora\" typeface=\"Nirmala UI\"/><a:font script=\"Tale\" typeface=\"Microsoft Tai Le\"/><a:font script=\"Talu\" typeface=\"Microsoft New Tai Lue\"/><a:font script=\"Tfng\" typeface=\"Ebrima\"/></a:majorFont><a:minorFont><a:latin typeface=\"Calibri\" panose=\"020F0502020204030204\"/><a:ea typeface=\"\"/><a:cs typeface=\"\"/><a:font script=\"Jpan\" typeface=\"æ¸¸ã´ã·ãã¯\"/><a:font script=\"Hang\" typeface=\"ë§ì ê³ ë\"/><a:font script=\"Hans\" typeface=\"ç­çº¿\"/><a:font script=\"Hant\" typeface=\"æ°ç´°æé«\"/><a:font script=\"Arab\" typeface=\"Arial\"/><a:font script=\"Hebr\" typeface=\"Arial\"/><a:font script=\"Thai\" typeface=\"Tahoma\"/><a:font script=\"Ethi\" typeface=\"Nyala\"/><a:font script=\"Beng\" typeface=\"Vrinda\"/><a:font script=\"Gujr\" typeface=\"Shruti\"/><a:font script=\"Khmr\" typeface=\"DaunPenh\"/><a:font script=\"Knda\" typeface=\"Tunga\"/><a:font script=\"Guru\" typeface=\"Raavi\"/><a:font script=\"Cans\" typeface=\"Euphemia\"/><a:font script=\"Cher\" typeface=\"Plantagenet Cherokee\"/><a:font script=\"Yiii\" typeface=\"Microsoft Yi Baiti\"/><a:font script=\"Tibt\" typeface=\"Microsoft Himalaya\"/><a:font script=\"Thaa\" typeface=\"MV Boli\"/><a:font script=\"Deva\" typeface=\"Mangal\"/><a:font script=\"Telu\" typeface=\"Gautami\"/><a:font script=\"Taml\" typeface=\"Latha\"/><a:font script=\"Syrc\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Orya\" typeface=\"Kalinga\"/><a:font script=\"Mlym\" typeface=\"Kartika\"/><a:font script=\"Laoo\" typeface=\"DokChampa\"/><a:font script=\"Sinh\" typeface=\"Iskoola Pota\"/><a:font script=\"Mong\" typeface=\"Mongolian Baiti\"/><a:font script=\"Viet\" typeface=\"Arial\"/><a:font script=\"Uigh\" typeface=\"Microsoft Uighur\"/><a:font script=\"Geor\" typeface=\"Sylfaen\"/><a:font script=\"Armn\" typeface=\"Arial\"/><a:font script=\"Bugi\" typeface=\"Leelawadee UI\"/><a:font script=\"Bopo\" typeface=\"Microsoft JhengHei\"/><a:font script=\"Java\" typeface=\"Javanese Text\"/><a:font script=\"Lisu\" typeface=\"Segoe UI\"/><a:font script=\"Mymr\" typeface=\"Myanmar Text\"/><a:font script=\"Nkoo\" typeface=\"Ebrima\"/><a:font script=\"Olck\" typeface=\"Nirmala UI\"/><a:font script=\"Osma\" typeface=\"Ebrima\"/><a:font script=\"Phag\" typeface=\"Phagspa\"/><a:font script=\"Syrn\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Syrj\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Syre\" typeface=\"Estrangelo Edessa\"/><a:font script=\"Sora\" typeface=\"Nirmala UI\"/><a:font script=\"Tale\" typeface=\"Microsoft Tai Le\"/><a:font script=\"Talu\" typeface=\"Microsoft New Tai Lue\"/><a:font script=\"Tfng\" typeface=\"Ebrima\"/></a:minorFont></a:fontScheme><a:fmtScheme name=\"Office\"><a:fillStyleLst><a:solidFill><a:schemeClr val=\"phClr\"/></a:solidFill><a:gradFill rotWithShape=\"1\"><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:lumMod val=\"110000\"/><a:satMod val=\"105000\"/><a:tint val=\"67000\"/></a:schemeClr></a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:lumMod val=\"105000\"/><a:satMod val=\"103000\"/><a:tint val=\"73000\"/></a:schemeClr></a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:lumMod val=\"105000\"/><a:satMod val=\"109000\"/><a:tint val=\"81000\"/></a:schemeClr></a:gs></a:gsLst><a:lin ang=\"5400000\" scaled=\"0\"/></a:gradFill><a:gradFill rotWithShape=\"1\"><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:satMod val=\"103000\"/><a:lumMod val=\"102000\"/><a:tint val=\"94000\"/></a:schemeClr></a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:satMod val=\"110000\"/><a:lumMod val=\"100000\"/><a:shade val=\"100000\"/></a:schemeClr></a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:lumMod val=\"99000\"/><a:satMod val=\"120000\"/><a:shade val=\"78000\"/></a:schemeClr></a:gs></a:gsLst><a:lin ang=\"5400000\" scaled=\"0\"/></a:gradFill></a:fillStyleLst><a:lnStyleLst><a:ln w=\"6350\" cap=\"flat\" cmpd=\"sng\" algn=\"ctr\"><a:solidFill><a:schemeClr val=\"phClr\"/></a:solidFill><a:prstDash val=\"solid\"/><a:miter lim=\"800000\"/></a:ln><a:ln w=\"12700\" cap=\"flat\" cmpd=\"sng\" algn=\"ctr\"><a:solidFill><a:schemeClr val=\"phClr\"/></a:solidFill><a:prstDash val=\"solid\"/><a:miter lim=\"800000\"/></a:ln><a:ln w=\"19050\" cap=\"flat\" cmpd=\"sng\" algn=\"ctr\"><a:solidFill><a:schemeClr val=\"phClr\"/></a:solidFill><a:prstDash val=\"solid\"/><a:miter lim=\"800000\"/></a:ln></a:lnStyleLst><a:effectStyleLst><a:effectStyle><a:effectLst/></a:effectStyle><a:effectStyle><a:effectLst/></a:effectStyle><a:effectStyle><a:effectLst><a:outerShdw blurRad=\"57150\" dist=\"19050\" dir=\"5400000\" algn=\"ctr\" rotWithShape=\"0\"><a:srgbClr val=\"000000\"><a:alpha val=\"63000\"/></a:srgbClr></a:outerShdw></a:effectLst></a:effectStyle></a:effectStyleLst><a:bgFillStyleLst><a:solidFill><a:schemeClr val=\"phClr\"/></a:solidFill><a:solidFill><a:schemeClr val=\"phClr\"><a:tint val=\"95000\"/><a:satMod val=\"170000\"/></a:schemeClr></a:solidFill><a:gradFill rotWithShape=\"1\"><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:tint val=\"93000\"/><a:satMod val=\"150000\"/><a:shade val=\"98000\"/><a:lumMod val=\"102000\"/></a:schemeClr></a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:tint val=\"98000\"/><a:satMod val=\"130000\"/><a:shade val=\"90000\"/><a:lumMod val=\"103000\"/></a:schemeClr></a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:shade val=\"63000\"/><a:satMod val=\"120000\"/></a:schemeClr></a:gs></a:gsLst><a:lin ang=\"5400000\" scaled=\"0\"/></a:gradFill></a:bgFillStyleLst></a:fmtScheme></a:themeElements><a:objectDefaults/><a:extraClrSchemeLst/></a:theme>"
+    },
+    "Metadata": {
+        "Country": [
+            "US",
+            "US"
+        ]
+    },
+    "Workbook": {
+        "Sheets": [
+            {
+                "Hidden": 0,
+                "name": "Sheet1",
+                "CodeName": "Sheet1"
+            },
+            {
+                "Hidden": 0,
+                "name": "sheet3",
+                "CodeName": "sheet3"
+            }
+        ],
+        "WBProps": {
+            "date1904": false
+        },
+        "Views": [
+            {}
+        ]
+    },
+    "Custprops": {
+        "SystemIdentifier": 66573,
+        "CodePage": 10000,
+        "AppVersion": "16.0000",
+        "ScaleCrop": false,
+        "LinksUpToDate": false,
+        "SharedDoc": false,
+        "HyperlinksChanged": false,
+        "FMTID": "02d5cdd59c2e1b10939708002b2cf9ae",
+        "LastAuthor": "Gabriele Cannata",
+        "Application": "Microsoft Macintosh Excel",
+        "ModifiedDate": "2023-08-04T11:22:18Z",
+        "DocSecurity": 0,
+        "Worksheets": 2,
+        "SheetNames": [
+            "Sheet1",
+            "sheet3"
+        ]
+    },
+    "Props": {
+        "SystemIdentifier": 66573,
+        "CodePage": 10000,
+        "AppVersion": "16.0000",
+        "ScaleCrop": false,
+        "LinksUpToDate": false,
+        "SharedDoc": false,
+        "HyperlinksChanged": false,
+        "FMTID": "02d5cdd59c2e1b10939708002b2cf9ae",
+        "LastAuthor": "Gabriele Cannata",
+        "Application": "Microsoft Macintosh Excel",
+        "ModifiedDate": "2023-08-04T11:22:18Z",
+        "DocSecurity": 0,
+        "Worksheets": 2,
+        "SheetNames": [
+            "Sheet1",
+            "sheet3"
+        ]
+    }
+}

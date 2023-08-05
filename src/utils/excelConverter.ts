@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {  Workbook } from "exceljs";
+import {  Borders, Workbook } from "exceljs";
 import { convertThemeColorToRGB, rgbToHex } from "./excelColors";
 import { CellData, CellStyle, RowData, SheetData } from "x-data-spreadsheet";
 
@@ -11,8 +11,18 @@ declare module "x-data-spreadsheet" {
    
 }
 
+type borderDir = "top"|"bottom"|"left"|"right";
 
 export function toSpreadsheet(wb: Workbook) {
+
+    function mapColor(oStyle: CellStyle,border: Partial<Borders>, what: borderDir){
+        if(border[what] && border[what].style && oStyle.border){
+            oStyle.border[what] = [
+                border[what].style?.toString(),
+                "#" + getColor(border[what].color)
+            ]
+        }
+    }
 
     console.log(wb);
 
@@ -75,7 +85,21 @@ export function toSpreadsheet(wb: Workbook) {
                 }
 
                 if (cell.style.border) {
-                    //
+
+
+
+                    const border = cell.style.border;
+                    console.log(border)
+                    oStyle.border = {};
+                    ["top","bottom","left","right"].forEach(what=>{
+                        mapColor(oStyle,border,what as borderDir);
+                    })
+                    // if(border.bottom && border.bottom.style){
+                    //     oStyle.border.bottom = [
+                    //         border.bottom.style?.toString(),
+                    //         "#" + getColor(border.bottom.color)
+                    //     ]
+                    // }
                 }
                 if (cell.style.font) {
                     const font = cell.style.font;

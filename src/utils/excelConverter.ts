@@ -86,20 +86,13 @@ export function toSpreadsheet(wb: Workbook) {
 
                 if (cell.style.border) {
 
-
-
                     const border = cell.style.border;
                     console.log(border)
                     oStyle.border = {};
                     ["top","bottom","left","right"].forEach(what=>{
                         mapColor(oStyle,border,what as borderDir);
-                    })
-                    // if(border.bottom && border.bottom.style){
-                    //     oStyle.border.bottom = [
-                    //         border.bottom.style?.toString(),
-                    //         "#" + getColor(border.bottom.color)
-                    //     ]
-                    // }
+                    });
+
                 }
                 if (cell.style.font) {
                     const font = cell.style.font;

@@ -180,3 +180,8 @@ ul.x-spreadsheet-menu {
         cursor: pointer;
     }
  }
+
+ .x-spreadsheet-border-palette table tr td {
+    overflow-y: visible;
+    overflow-x: visible;
+ }

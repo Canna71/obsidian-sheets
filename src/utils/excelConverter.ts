@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Borders, CellFormulaValue, Column, Workbook } from "exceljs";
+import {
+    BorderStyle,
+    Borders,
+    CellFormulaValue,
+    Column,
+    Workbook,
+} from "exceljs";
 import { convertThemeColorToRGB, rgbToHex } from "./excelColors";
 import { CellData, CellStyle, RowData, SheetData } from "x-data-spreadsheet";
 // import { SpreadsheetData } from "x-data-spreadsheet";
@@ -49,6 +55,8 @@ export function toSpreadsheet(wb: Workbook) {
                 }
             }
         }
+        // TODO: use options
+        ows.cols!.len = Math.max(25, ws.actualColumnCount);
 
         ws.eachRow((row, rowNumber) => {
             const rowId = row.number - 1;
@@ -198,7 +206,12 @@ export function toSpreadsheet(wb: Workbook) {
                     //
                 }
             });
+
+
         });
+
+        // TODO: use options    
+        ows.rows!.len = Math.max(100, ws.actualRowCount);
         // merges
         const merges = [];
         for (const m in (ws as any)._merges) {
@@ -243,7 +256,30 @@ function getColor(fgColor: any) {
     }
 }
 
+function toColor(hex: string) {
+    return {
+        argb: "FF" + hex.replace("#", ""),
+    };
+}
+
 export function toExcelJS(data: SheetData[]): Workbook {
+    function mapBorderColor(
+        borders: Partial<Borders>,
+        cellstyle: CellStyle,
+        what: borderDir
+    ) {
+        if (cellstyle.border) {
+            const brd = cellstyle.border[what];
+            if (brd) {
+                const [style, color] = brd;
+                borders[what] = {
+                    style: style as BorderStyle,
+                    color: toColor(color),
+                };
+            }
+        }
+    }
+
     const workbook = new Workbook();
     console.log(data);
     for (const ssheet of data) {
@@ -289,13 +325,43 @@ export function toExcelJS(data: SheetData[]): Workbook {
                         const cellNum = Number(cellId);
                         const celldata = rowdata.cells[cellNum];
                         const cell = row.getCell(cellNum + 1);
-                        cell.value = celldata.text;
-                        if(celldata.text.startsWith('=')){
+                        cell.value = celldata.text || "";
+                        if (celldata.text?.startsWith("=")) {
                             cell.value = {
-                                formula: celldata.text.substring(1)
-                            } as CellFormulaValue
+                                formula: celldata.text.substring(1),
+                            } as CellFormulaValue;
                         }
-                        
+
+                        // style
+                        if (celldata.style !== undefined) {
+                            const cellstyle = ssheet.styles[celldata.style];
+                            if (cellstyle.bgcolor) {
+                                cell.style.fill = {
+                                    type: "pattern",
+                                    pattern: "solid",
+                                    fgColor: toColor(cellstyle.bgcolor),
+                                };
+                            }
+
+                            if (cellstyle.border) {
+                                const borders: Partial<Borders> = {};
+
+                                ["top","bottom","right","left"].forEach(what =>{
+                                    mapBorderColor(borders, cellstyle,what)
+                                })
+                                cell.style.border = borders;
+                                
+                                // const brd = cellstyle.border.bottom;
+                                // if (brd) {
+                                //     const [style, color] = brd;
+                                //     borders.bottom = {
+                                //         style: style as BorderStyle,
+                                //         color: toColor(color),
+                                //     };
+                                // }
+                            }
+                        }
+
                         // cell.numFmt = "00.00"
                     }
                 }

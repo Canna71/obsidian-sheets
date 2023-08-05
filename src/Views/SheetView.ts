@@ -18,7 +18,9 @@ import * as XLSX from "xlsx";
 import * as ExcelJS from "exceljs";
 import { stox } from "../utils/xlsxpread";
 import { toSpreadsheet } from "src/utils/excelConverter";
-import { createSpreadSheet, saveToFile } from "./spreadSheetWrapper";
+import { createSpreadSheet, prepareDataForSaving, saveToFile } from "./spreadSheetWrapper";
+import Spreadsheet from "x-data-spreadsheet";
+import { SheetData } from "x-data-spreadsheet";
 
 
 const DEFAULT_OPTIONS = {
@@ -199,13 +201,15 @@ async function parseFileContent(filename:string, fileContent:ArrayBuffer){
 
 }
 
+
+
 function saveDataIntoBlock(
     data: any,
     sheet: any,
     ctx: MarkdownPostProcessorContext
 ) {
-    const s = (ctx as any).spreadsheet;
-    const dts = s.getData();
+    const s = (ctx as any).spreadsheet as Spreadsheet;
+    const dts = prepareDataForSaving( s.getData() as SheetData[] );
 
     const view = app.workspace.getActiveViewOfType(MarkdownView);
     if (!view) return;

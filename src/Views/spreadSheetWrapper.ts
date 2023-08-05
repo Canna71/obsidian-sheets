@@ -4,6 +4,7 @@ import Spreadsheet from "x-data-spreadsheet";
 import * as XLSX from "xlsx";
 import { xtos } from "../utils/xlsxpread";
 import { toExcelJS } from "src/utils/excelConverter";
+import { SheetData } from "x-data-spreadsheet";
 
 
 function resolve_book_type(fileName: string): XLSX.BookType {
@@ -128,4 +129,37 @@ function styleSS2WB(ssstyle: any) {
         };
     }
     return style;
+}
+
+
+export function prepareDataForSaving(data: SheetData[]): SheetData[] {
+
+    for(const sheet of data){
+        const actualStyles = [];
+        const usedStyles = new Map<number, number>();
+        if(sheet.styles !== undefined) {
+            for(const rowId in sheet.rows) {
+                const rowNum = Number(rowId)
+                if(!isNaN(rowNum)) {
+                    const row = sheet.rows[rowNum];
+                    for(const cellId in row.cells) {
+                        const cellNum = Number(cellId);
+                        const cell = row.cells[cellNum];
+                        if(cell.style !== undefined){
+                            if(usedStyles.has(cell.style)){
+                                cell.style = usedStyles.get(cell.style)
+                            } else {
+                                actualStyles.push(sheet.styles[cell.style])
+                                const index = actualStyles.length-1;
+                                usedStyles.set(cell.style, index)
+                                cell.style = index;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        sheet.styles = actualStyles;
+    }
+    return data;
 }

@@ -5,41 +5,21 @@
 import {
     MarkdownPostProcessorContext,
     MarkdownView,
-    debounce,
     parseYaml,
     stringifyYaml,
     Notice,
 } from "obsidian";
 import { SheetjsSettings } from "src/Settings";
-import Spreadsheet from "x-data-spreadsheet";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
 // import * as fs from "fs/promises"
 // import * as path from "path"
 
 import * as XLSX from "xlsx";
 import * as ExcelJS from "exceljs";
-import { stox, xtos } from "../utils/xlsxpread";
+import { stox } from "../utils/xlsxpread";
 import { toSpreadsheet } from "src/utils/excelConverter";
+import { createSpreadSheet, saveToFile } from "./spreadSheetWrapper";
 
-const saveIcon =
-    "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTc3MTc3MDkyOTg4IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjI2NzgiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PC9zdHlsZT48L2RlZnM+PHBhdGggZD0iTTIxMy4zMzMzMzMgMTI4aDU5Ny4zMzMzMzRhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMSA4NS4zMzMzMzMgODUuMzMzMzMzdjU5Ny4zMzMzMzRhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMS04NS4zMzMzMzMgODUuMzMzMzMzSDIxMy4zMzMzMzNhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMS04NS4zMzMzMzMtODUuMzMzMzMzVjIxMy4zMzMzMzNhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMSA4NS4zMzMzMzMtODUuMzMzMzMzeiBtMzY2LjkzMzMzNCAxMjhoMzQuMTMzMzMzYTI1LjYgMjUuNiAwIDAgMSAyNS42IDI1LjZ2MTE5LjQ2NjY2N2EyNS42IDI1LjYgMCAwIDEtMjUuNiAyNS42aC0zNC4xMzMzMzNhMjUuNiAyNS42IDAgMCAxLTI1LjYtMjUuNlYyODEuNmEyNS42IDI1LjYgMCAwIDEgMjUuNi0yNS42ek0yMTMuMzMzMzMzIDIxMy4zMzMzMzN2NTk3LjMzMzMzNGg1OTcuMzMzMzM0VjIxMy4zMzMzMzNIMjEzLjMzMzMzM3ogbTEyOCAwdjI1NmgzNDEuMzMzMzM0VjIxMy4zMzMzMzNoODUuMzMzMzMzdjI5OC42NjY2NjdhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMS00Mi42NjY2NjcgNDIuNjY2NjY3SDI5OC42NjY2NjdhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMS00Mi42NjY2NjctNDIuNjY2NjY3VjIxMy4zMzMzMzNoODUuMzMzMzMzek0yNTYgMjEzLjMzMzMzM2g4NS4zMzMzMzMtODUuMzMzMzMzeiBtNDI2LjY2NjY2NyAwaDg1LjMzMzMzMy04NS4zMzMzMzN6IG0wIDU5Ny4zMzMzMzR2LTEyOEgzNDEuMzMzMzMzdjEyOEgyNTZ2LTE3MC42NjY2NjdhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMSA0Mi42NjY2NjctNDIuNjY2NjY3aDQyNi42NjY2NjZhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMSA0Mi42NjY2NjcgNDIuNjY2NjY3djE3MC42NjY2NjdoLTg1LjMzMzMzM3ogbTg1LjMzMzMzMyAwaC04NS4zMzMzMzMgODUuMzMzMzMzek0zNDEuMzMzMzMzIDgxMC42NjY2NjdIMjU2aDg1LjMzMzMzM3oiIHAtaWQ9IjI2NzkiIGZpbGw9IiMyYzJjMmMiPjwvcGF0aD48L3N2Zz4=";
-
-function resolve_book_type(fileName: string): XLSX.BookType {
-    const _BT: any = {
-        xls: "biff8",
-        htm: "html",
-        slk: "sylk",
-        socialcalc: "eth",
-        Sh33tJS: "WTF",
-    };
-    let bookType = "xlsx";
-    const ext = fileName.slice(fileName.lastIndexOf(".")).toLowerCase();
-    if (ext.match(/^\.[a-z]+$/)) {
-        bookType = ext.slice(1);
-    }
-    bookType = _BT[bookType] || bookType;
-    return bookType as XLSX.BookType;
-}
 
 const DEFAULT_OPTIONS = {
     height: 540,
@@ -51,10 +31,9 @@ const DEFAULT_OPTIONS = {
     cellWidth: 100,
 };
 
-interface SheetOptions {
-    filename?: string;
-    data?: any;
-}
+const saveIcon =
+    "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTc3MTc3MDkyOTg4IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjI2NzgiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PC9zdHlsZT48L2RlZnM+PHBhdGggZD0iTTIxMy4zMzMzMzMgMTI4aDU5Ny4zMzMzMzRhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMSA4NS4zMzMzMzMgODUuMzMzMzMzdjU5Ny4zMzMzMzRhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMS04NS4zMzMzMzMgODUuMzMzMzMzSDIxMy4zMzMzMzNhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMS04NS4zMzMzMzMtODUuMzMzMzMzVjIxMy4zMzMzMzNhODUuMzMzMzMzIDg1LjMzMzMzMyAwIDAgMSA4NS4zMzMzMzMtODUuMzMzMzMzeiBtMzY2LjkzMzMzNCAxMjhoMzQuMTMzMzMzYTI1LjYgMjUuNiAwIDAgMSAyNS42IDI1LjZ2MTE5LjQ2NjY2N2EyNS42IDI1LjYgMCAwIDEtMjUuNiAyNS42aC0zNC4xMzMzMzNhMjUuNiAyNS42IDAgMCAxLTI1LjYtMjUuNlYyODEuNmEyNS42IDI1LjYgMCAwIDEgMjUuNi0yNS42ek0yMTMuMzMzMzMzIDIxMy4zMzMzMzN2NTk3LjMzMzMzNGg1OTcuMzMzMzM0VjIxMy4zMzMzMzNIMjEzLjMzMzMzM3ogbTEyOCAwdjI1NmgzNDEuMzMzMzM0VjIxMy4zMzMzMzNoODUuMzMzMzMzdjI5OC42NjY2NjdhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMS00Mi42NjY2NjcgNDIuNjY2NjY3SDI5OC42NjY2NjdhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMS00Mi42NjY2NjctNDIuNjY2NjY3VjIxMy4zMzMzMzNoODUuMzMzMzMzek0yNTYgMjEzLjMzMzMzM2g4NS4zMzMzMzMtODUuMzMzMzMzeiBtNDI2LjY2NjY2NyAwaDg1LjMzMzMzMy04NS4zMzMzMzN6IG0wIDU5Ny4zMzMzMzR2LTEyOEgzNDEuMzMzMzMzdjEyOEgyNTZ2LTE3MC42NjY2NjdhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMSA0Mi42NjY2NjctNDIuNjY2NjY3aDQyNi42NjY2NjZhNDIuNjY2NjY3IDQyLjY2NjY2NyAwIDAgMSA0Mi42NjY2NjcgNDIuNjY2NjY3djE3MC42NjY2NjdoLTg1LjMzMzMzM3ogbTg1LjMzMzMzMyAwaC04NS4zMzMzMzMgODUuMzMzMzMzek0zNDEuMzMzMzMzIDgxMC42NjY2NjdIMjU2aDg1LjMzMzMzM3oiIHAtaWQ9IjI2NzkiIGZpbGw9IiMyYzJjMmMiPjwvcGF0aD48L3N2Zz4=";
+
 
 export function processCodeBlock(
     source: string,
@@ -78,7 +57,7 @@ export function processCodeBlock(
     if ((ctx as any).spreadsheet) return;
 
     const options = { ...DEFAULT_OPTIONS, ...parseYaml(source) };
-
+    
     const {
         filename,
         height,
@@ -143,39 +122,40 @@ export function processCodeBlock(
         // }
     };
 
-    if (!filename) {
+    if (!filename || settings.enableSaveToFile) {
         spreadsheet_options.extendToolbar = {
             left: [
                 {
                     tip: "Save",
                     icon: saveIcon,
                     shortcut: "Ctrl+S",
-                    onClick: (s: any, d: any) => saveDataIntoBlock(s, d, ctx),
+                    onClick: (s: any, d: any) => {
+                        if(!filename)  saveDataIntoBlock(s, d, ctx);
+                        else {
+                            saveToFile((ctx as any).spreadsheet, filename)
+                        }
+                    },
                 },
             ],
         };
     }
 
-    if (filename) {
+    if (filename !== undefined) {
         (async () => {
-            const fileContent = await app.vault.adapter.readBinary(filename);
-
-            const xlsx = XLSX.read(fileContent, {
-                cellStyles: true,
-                sheetStubs: true, // >
-            });
-            const workbook = new ExcelJS.Workbook();
-
-            const excelWorkbook = await workbook.xlsx.load(fileContent);
-
-            const data2 = toSpreadsheet(excelWorkbook);
-
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const data = stox(xlsx);
+            let data = undefined
+            try {
+                const fileContent = await app.vault.adapter.readBinary(filename);
+             
+                data = await parseFileContent(filename, fileContent);
+            } catch (e) {
+                console.warn(e)
+            }
+            
+            
             (ctx as any).spreadsheet = createSpreadSheet(
                 container,
                 spreadsheet_options,
-                { ...options, data: data2 },
+                { ...options, data: data },
                 ctx
             );
             // .loadData();
@@ -197,6 +177,26 @@ export function processCodeBlock(
     // https://forum.obsidian.md/t/saving-changes-in-codeblock-post-processor/47393
     // https://codesandbox.io/s/x-spreadsheet-react-3v1bw?file=/src/Spreadsheet.js:527-774
     // https://github.com/wolf-table/table
+}
+
+async function parseFileContent(filename:string, fileContent:ArrayBuffer){
+
+    const ext = filename.slice(filename.lastIndexOf(".")).toLowerCase();
+    if(ext === ".xlsx" || ext === ".csv") {
+        const workbook = new ExcelJS.Workbook();
+        const excelWorkbook = await workbook.xlsx.load(fileContent);
+        const data2 = toSpreadsheet(excelWorkbook);
+        return data2;
+    } else {
+        const xlsx = XLSX.read(fileContent, {
+            cellStyles: true,
+            sheetStubs: true, // >
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const data = stox(xlsx);
+        return data;
+    }
+
 }
 
 function saveDataIntoBlock(
@@ -224,85 +224,8 @@ function saveDataIntoBlock(
         }
     } else {
         // preview
-        new Notice("Sheet not saved while in read mode");
+        new Notice("Sheet not saved while in reading mode");
     }
 }
 
-function createSpreadSheet(
-    container: HTMLElement,
-    spreadsheet_options: any,
-    options: SheetOptions,
-    ctx: MarkdownPostProcessorContext
-) {
-    const spreadSheet = new Spreadsheet(
-        container,
-        spreadsheet_options
-    ).loadData(options.data || {});
-    spreadSheet.change(
-        debounce((data) => {
-            // save data
-            // console.log(data)
-            if (options.filename) {
-                const spreadsheetData = spreadSheet.getData() as any[];
-                const wb = xtos(spreadsheetData) as XLSX.WorkBook;
-                applyStyles(spreadsheetData, wb);
-                const bookType = resolve_book_type(options.filename);
-                const bytes = XLSX.write(wb, {
-                    bookType: bookType,
-                    type: "buffer",
-                    compression: true,
-                    bookSST: true,
-                    cellStyles: true,
-                });
-                // fs.writeFile(filename,bytes);
-                app.vault.adapter.writeBinary(options.filename, bytes);
-                console.log(`data saved tp ${options.filename}`);
-            } else {
-                // tentative
-                // saveDataIntoBlock(null,null,ctx)
-            }
 
-            // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
-        }, 1000)
-    );
-
-    return spreadSheet;
-}
-
-function applyStyles(ssdata: any, wb: XLSX.WorkBook) {
-    console.log(ssdata, wb);
-    for (const sheet of ssdata) {
-        const { name, styles, rows } = sheet;
-        for (const rowId in rows) {
-            const cells = rows[rowId]["cells"];
-            for (const cellId in cells) {
-                const cell = cells[cellId];
-                if (cell.style !== undefined) {
-                    const wbStyle = styleSS2WB(styles[cell.style]);
-                    //TODO: apply to the right WB cell
-                    const cellRef = XLSX.utils.encode_cell({
-                        r: Number(rowId),
-                        c: Number(cellId),
-                    });
-                    wb.Sheets[name][cellRef].s = wbStyle;
-                }
-            }
-        }
-    }
-}
-
-function styleSS2WB(ssstyle: any) {
-    const style: any = { patternType: "solid" };
-    if (ssstyle.bgcolor) {
-        style.bgColor = {
-            rgb: ssstyle.bgcolor.substring(1),
-        };
-    }
-
-    if (ssstyle.color) {
-        style.fgColor = {
-            rgb: ssstyle.color.substring(1),
-        };
-    }
-    return style;
-}

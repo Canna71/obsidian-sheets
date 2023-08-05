@@ -23,5 +23,6 @@
   },
   "include": [
     "**/*.ts","**/*.tsx","**/*.svg"
- ]
+ ],
+ "exclude": ["node_modules"]
 }

@@ -161,14 +161,14 @@ export function toSpreadsheet(wb: Workbook) {
                 if (cell.style.numFmt) {
                     const numFmt = cell.style.numFmt;
                     if (numFmt.endsWith("%")) {
-                        (oStyle as any).format = "percent";
+                        (oStyle).format = "percent";
                         // TODO: 0.00%
                     } else if (numFmt.contains("€")) {
-                        (oStyle as any).format = "eur";
+                        (oStyle).format = "eur";
                     } else if (numFmt.contains("$")) {
-                        (oStyle as any).format = "usd";
+                        (oStyle).format = "usd";
                     } else if (numFmt === "@") {
-                        (oStyle as any).format = "text";
+                        (oStyle).format = "text";
                     }
                     // TODO: dates mm-dd-yy
                     // TODO: [$-F800]dddd, mmmm dd, yyyy
@@ -176,7 +176,7 @@ export function toSpreadsheet(wb: Workbook) {
                     // TODO: [$-F400]h:mm:ss AM/PM
                     // TODO: 0.00E+00
                     console.log(numFmt);
-                }
+                } 
                 if (cell.style.protection) {
                     //TODO:
                 }
@@ -321,20 +321,40 @@ export function toExcelJS(data: SheetData[]): Workbook {
                     if (rowdata.hidden) {
                         row.hidden = true;
                     }
+                    if(rowdata.height !== undefined) {
+                        row.height = px2pt( rowdata.height);
+                    }
                     for (const cellId in rowdata.cells) {
                         const cellNum = Number(cellId);
                         const celldata = rowdata.cells[cellNum];
                         const cell = row.getCell(cellNum + 1);
-                        cell.value = celldata.text || "";
+
                         if (celldata.text?.startsWith("=")) {
                             cell.value = {
                                 formula: celldata.text.substring(1),
                             } as CellFormulaValue;
+                        }  else if(!isNaN(Number(celldata.text))){
+                            cell.value = Number(celldata.text)
+                        } else if (!isNaN(Date.parse(celldata.text))){
+                            cell.value = new Date(celldata.text)
+                        } else {
+                            cell.value = celldata.text
                         }
+ 
+
+                        // if(!isNaN(Number(celldata.text))){
+                        //     // TODO: improve formatting
+                        //     // cell.numFmt = "#,##0.00"
+                        //     if(celldata.text.startsWith("=")){
+                        //         // cell.numFmt = "#,##0.00";
+                        //     }
+                        // } else {
+                        //     cell.numFmt = "@";
+                        // }
 
                         // style
                         if (celldata.style !== undefined) {
-                            const cellstyle = ssheet.styles[celldata.style];
+                            const cellstyle = ssheet.styles![celldata.style];
                             if (cellstyle.bgcolor) {
                                 cell.style.fill = {
                                     type: "pattern",
@@ -347,20 +367,65 @@ export function toExcelJS(data: SheetData[]): Workbook {
                                 const borders: Partial<Borders> = {};
 
                                 ["top","bottom","right","left"].forEach(what =>{
-                                    mapBorderColor(borders, cellstyle,what)
+                                    mapBorderColor(borders, cellstyle,what as borderDir)
                                 })
                                 cell.style.border = borders;
                                 
-                                // const brd = cellstyle.border.bottom;
-                                // if (brd) {
-                                //     const [style, color] = brd;
-                                //     borders.bottom = {
-                                //         style: style as BorderStyle,
-                                //         color: toColor(color),
-                                //     };
-                                // }
                             }
+
+                            if(cellstyle.font) {
+                                cell.style.font = cell.style.font || {}
+                                if(cellstyle.font.bold) cell.style.font.bold = true;
+                                if(cellstyle.font.family !== undefined) cell.style.font.family = cellstyle.font.family;
+                                if(cellstyle.font.italic) cell.style.font.italic = true;
+                                if(cellstyle.font.name) cell.style.font.name = cellstyle.font.name;
+                                if(cellstyle.font.size !== undefined) cell.style.font.size =  cellstyle.font.size;
+
+                            }
+                            if(cellstyle.color !== undefined) {
+                                cell.style.font = cell.style.font || {}
+                                cell.style.font.color = getColor(cellstyle.color);
+                            }
+                            if(cellstyle.strike){
+                                cell.style.font = cell.style.font || {}
+                                cell.style.font.strike = true;
+                            }
+                            if(cellstyle.underline){
+                                cell.style.font = cell.style.font || {}
+                                cell.style.font.underline = true;
+                            }
+                            if(cellstyle.textwrap){
+                                cell.style.alignment = cell.style.alignment || {}
+                                cell.style.alignment.wrapText = true
+                            }
+
+                            if(cellstyle.align !== undefined) {
+                                cell.style.alignment = cell.style.alignment || {}
+                                cell.style.alignment.horizontal = cellstyle.align;
+                            }
+
+                            if (cellstyle.valign !== undefined) {
+                                cell.style.alignment = cell.style.alignment || {}
+                                cell.style.alignment.vertical = cellstyle.valign;
+                            }
+                            if(cellstyle.format  !== undefined) {
+                                if(cellstyle.format === "percent") {
+                                    cell.style.numFmt = "0.00%"
+                                } else if (cellstyle.format === "eur") {
+                                    cell.style.numFmt = `#,##0.00 "€"`
+                                } else if (cellstyle.format === "usd") {
+                                    cell.style.numFmt = `#,##0.00 "$"`
+                                } else if (cellstyle.format === "date") {
+                                    cell.style.numFmt === "mm-dd-yy"
+                                } else if (cellstyle.format === "time") {
+                                    cell.style.numFmt === "[$-F400]h:mm:ss AM/PM"
+                                }
+                            } 
+                    
                         }
+
+                        
+                        
 
                         // cell.numFmt = "00.00"
                     }

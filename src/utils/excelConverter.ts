@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Borders, Column, Workbook } from "exceljs";
+import { Borders, CellFormulaValue, Column, Workbook } from "exceljs";
 import { convertThemeColorToRGB, rgbToHex } from "./excelColors";
 import { CellData, CellStyle, RowData, SheetData } from "x-data-spreadsheet";
 // import { SpreadsheetData } from "x-data-spreadsheet";
@@ -290,6 +290,13 @@ export function toExcelJS(data: SheetData[]): Workbook {
                         const celldata = rowdata.cells[cellNum];
                         const cell = row.getCell(cellNum + 1);
                         cell.value = celldata.text;
+                        if(celldata.text.startsWith('=')){
+                            cell.value = {
+                                formula: celldata.text.substring(1)
+                            } as CellFormulaValue
+                        }
+                        
+                        // cell.numFmt = "00.00"
                     }
                 }
             }

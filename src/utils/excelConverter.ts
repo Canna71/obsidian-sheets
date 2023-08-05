@@ -281,7 +281,6 @@ export function toExcelJS(data: SheetData[]): Workbook {
     }
 
     const workbook = new Workbook();
-    console.log(data);
     for (const ssheet of data) {
         const wsheet = workbook.addWorksheet(ssheet.name);
 
@@ -431,6 +430,13 @@ export function toExcelJS(data: SheetData[]): Workbook {
                     }
                 }
             }
+        }
+
+        const merges = ssheet.merges;
+        if(merges){
+            merges.forEach(merge => {
+                wsheet.mergeCells(merge);
+            })
         }
     }
     return workbook;

@@ -158,22 +158,18 @@ export function toSpreadsheet(wb: Workbook) {
                 }
                 if (cell.style.numFmt) {
                     const numFmt = cell.style.numFmt;
-                    if (numFmt.endsWith("%")) {
-                        (oStyle).format = "percent";
-                        // TODO: 0.00%
-                    } else if (numFmt.contains("€")) {
-                        (oStyle).format = "eur";
-                    } else if (numFmt.contains("$")) {
-                        (oStyle).format = "usd";
-                    } else if (numFmt === "@") {
-                        (oStyle).format = "text";
-                    }
-                    // TODO: dates mm-dd-yy
-                    // TODO: [$-F800]dddd, mmmm dd, yyyy
-                    // TODO: 0.00
-                    // TODO: [$-F400]h:mm:ss AM/PM
-                    // TODO: 0.00E+00
-                    console.log(numFmt);
+                    oStyle.format = numFmt;
+                    // if (numFmt.endsWith("%")) {
+                    //     (oStyle).format = "percent";
+                    //     // TODO: 0.00%
+                    // } else if (numFmt.contains("€")) {
+                    //     (oStyle).format = "eur";
+                    // } else if (numFmt.contains("$")) {
+                    //     (oStyle).format = "usd";
+                    // } else if (numFmt === "@") {
+                    //     (oStyle).format = "text";
+                    // }
+                    // console.log(numFmt);
                 } 
                 if (cell.style.protection) {
                     //TODO:
@@ -339,15 +335,7 @@ export function toExcelJS(data: SheetData[]): Workbook {
                         }
  
 
-                        // if(!isNaN(Number(celldata.text))){
-                        //     // TODO: improve formatting
-                        //     // cell.numFmt = "#,##0.00"
-                        //     if(celldata.text.startsWith("=")){
-                        //         // cell.numFmt = "#,##0.00";
-                        //     }
-                        // } else {
-                        //     cell.numFmt = "@";
-                        // }
+
 
                         // style
                         if (celldata.style !== undefined) {
@@ -405,18 +393,20 @@ export function toExcelJS(data: SheetData[]): Workbook {
                                 cell.style.alignment = cell.style.alignment || {}
                                 cell.style.alignment.vertical = cellstyle.valign;
                             }
-                            if(cellstyle.format  !== undefined) {
-                                if(cellstyle.format === "percent") {
-                                    cell.style.numFmt = "0.00%"
-                                } else if (cellstyle.format === "eur") {
-                                    cell.style.numFmt = `#,##0.00 "€"`
-                                } else if (cellstyle.format === "usd") {
-                                    cell.style.numFmt = `#,##0.00 "$"`
-                                } else if (cellstyle.format === "date") {
-                                    cell.style.numFmt === "mm-dd-yy"
-                                } else if (cellstyle.format === "time") {
-                                    cell.style.numFmt === "[$-F400]h:mm:ss AM/PM"
-                                }
+
+                            if(cellstyle.format  !== undefined && cellstyle.format !== "") {
+                                cell.style.numFmt = cellstyle.format;
+                                // if(cellstyle.format === "percent") {
+                                //     cell.style.numFmt = "0.00%"
+                                // } else if (cellstyle.format === "eur") {
+                                //     cell.style.numFmt = `#,##0.00 "€"`
+                                // } else if (cellstyle.format === "usd") {
+                                //     cell.style.numFmt = `#,##0.00 "$"`
+                                // } else if (cellstyle.format === "date") {
+                                //     cell.style.numFmt === "mm-dd-yy"
+                                // } else if (cellstyle.format === "time") {
+                                //     cell.style.numFmt === "[$-F400]h:mm:ss AM/PM"
+                                // }
                             } 
                     
                         }

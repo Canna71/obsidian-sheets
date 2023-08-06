@@ -91,7 +91,6 @@ export function processCodeBlock(
             height: () => height,
             width: () => {
                 const w = containerWidth();
-                // console.log(`cotainer width: ${w}`)
                 return w;
             },
         },
@@ -119,7 +118,6 @@ export function processCodeBlock(
             } as any,
         },
         // onKeyDown: (evt) => {
-        //     console.log(`my own keydown`, evt);
         // }
     };
 

@@ -34,7 +34,6 @@ export function toSpreadsheet(wb: Workbook) {
         }
     }
 
-    console.log(wb);
 
     const out = wb.worksheets.map((ws) => {
         const ows: SheetData = {
@@ -99,7 +98,6 @@ export function toSpreadsheet(wb: Workbook) {
 
                 if (cell.style.border) {
                     const border = cell.style.border;
-                    console.log(border);
                     oStyle.border = {};
                     ["top", "bottom", "left", "right"].forEach((what) => {
                         mapColor(oStyle, border, what as borderDir);

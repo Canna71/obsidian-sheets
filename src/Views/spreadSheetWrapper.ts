@@ -200,7 +200,6 @@ function prepareDataForLoading(spreadsheet:Spreadsheet, spreadSheetData: Spreads
         }
         spreadsheet.loadData(sheets);
         if(spreadSheetData.state?.sheetName){
-            console.log("here");
             // const d = this.datas[index];
             // this.sheet.resetData(d);
             const s = (spreadsheet as any);

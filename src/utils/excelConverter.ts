@@ -35,6 +35,8 @@ export function toSpreadsheet(wb: Workbook) {
         }
     }
 
+
+
     const out = wb.worksheets.map((ws) => {
         const ows: SheetData = {
             name: ws.name,
@@ -223,6 +225,9 @@ export function toSpreadsheet(wb: Workbook) {
         return ows;
     });
     console.log(out);
+
+    
+
     return out;
 }
 function pt2px(pt: number) {

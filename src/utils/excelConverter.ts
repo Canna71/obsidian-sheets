@@ -4,6 +4,7 @@ import {
     Borders,
     CellFormulaValue,
     Column,
+    Table,
     Workbook,
 } from "exceljs";
 import { convertThemeColorToRGB, rgbToHex } from "./excelColors";
@@ -201,6 +202,7 @@ export function toSpreadsheet(wb: Workbook) {
                 }
             });
 
+            
 
         });
 
@@ -214,6 +216,23 @@ export function toSpreadsheet(wb: Workbook) {
             merges.push(range);
         }
         ows.merges = merges;
+
+        const tables = ws.getTables();
+
+        const filterRef = tables.map(ttable=>{
+            const {table} = ttable;
+            return table.autoFilterRef;
+        });
+        
+        // Note: we only support one table :-(
+        if(filterRef.length>0){
+            const ref = filterRef[0];
+            ows.autofilter = {
+                ref,
+                filters: []
+            };
+        }
+
         return ows;
     });
     console.log(out);

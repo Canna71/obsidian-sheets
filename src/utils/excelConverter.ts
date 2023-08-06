@@ -35,7 +35,6 @@ export function toSpreadsheet(wb: Workbook) {
         }
     }
 
-
     const out = wb.worksheets.map((ws) => {
         const ows: SheetData = {
             name: ws.name,
@@ -171,7 +170,7 @@ export function toSpreadsheet(wb: Workbook) {
                     //     (oStyle).format = "text";
                     // }
                     // console.log(numFmt);
-                } 
+                }
                 if (cell.style.protection) {
                     //TODO:
                 }
@@ -201,12 +200,9 @@ export function toSpreadsheet(wb: Workbook) {
                     //
                 }
             });
-
-            
-
         });
 
-        // TODO: use options    
+        // TODO: use options
         ows.rows!.len = Math.max(100, ws.actualRowCount);
         // merges
         const merges = [];
@@ -217,19 +213,10 @@ export function toSpreadsheet(wb: Workbook) {
         }
         ows.merges = merges;
 
-        const tables = ws.getTables();
-
-        const filterRef = tables.map(ttable=>{
-            const {table} = ttable;
-            return table.autoFilterRef;
-        });
-        
-        // Note: we only support one table :-(
-        if(filterRef.length>0){
-            const ref = filterRef[0];
+        if(typeof(ws.autoFilter) === "string"){
             ows.autofilter = {
-                ref,
-                filters: []
+                ref: ws.autoFilter,
+                filters: [],
             };
         }
 
@@ -333,8 +320,8 @@ export function toExcelJS(data: SheetData[]): Workbook {
                     if (rowdata.hidden) {
                         row.hidden = true;
                     }
-                    if(rowdata.height !== undefined) {
-                        row.height = px2pt( rowdata.height);
+                    if (rowdata.height !== undefined) {
+                        row.height = px2pt(rowdata.height);
                     }
                     for (const cellId in rowdata.cells) {
                         const cellNum = Number(cellId);
@@ -345,16 +332,13 @@ export function toExcelJS(data: SheetData[]): Workbook {
                             cell.value = {
                                 formula: celldata.text.substring(1),
                             } as CellFormulaValue;
-                        }  else if(!isNaN(Number(celldata.text))){
-                            cell.value = Number(celldata.text)
-                        } else if (!isNaN(Date.parse(celldata.text))){
-                            cell.value = new Date(celldata.text)
+                        } else if (!isNaN(Number(celldata.text))) {
+                            cell.value = Number(celldata.text);
+                        } else if (!isNaN(Date.parse(celldata.text))) {
+                            cell.value = new Date(celldata.text);
                         } else {
-                            cell.value = celldata.text
+                            cell.value = celldata.text;
                         }
- 
-
-
 
                         // style
                         if (celldata.style !== undefined) {
@@ -370,50 +354,70 @@ export function toExcelJS(data: SheetData[]): Workbook {
                             if (cellstyle.border) {
                                 const borders: Partial<Borders> = {};
 
-                                ["top","bottom","right","left"].forEach(what =>{
-                                    mapBorderColor(borders, cellstyle,what as borderDir)
-                                })
+                                ["top", "bottom", "right", "left"].forEach(
+                                    (what) => {
+                                        mapBorderColor(
+                                            borders,
+                                            cellstyle,
+                                            what as borderDir
+                                        );
+                                    }
+                                );
                                 cell.style.border = borders;
-                                
                             }
 
-                            if(cellstyle.font) {
-                                cell.style.font = cell.style.font || {}
-                                if(cellstyle.font.bold) cell.style.font.bold = true;
-                                if(cellstyle.font.family !== undefined) cell.style.font.family = cellstyle.font.family;
-                                if(cellstyle.font.italic) cell.style.font.italic = true;
-                                if(cellstyle.font.name) cell.style.font.name = cellstyle.font.name;
-                                if(cellstyle.font.size !== undefined) cell.style.font.size =  cellstyle.font.size;
-
+                            if (cellstyle.font) {
+                                cell.style.font = cell.style.font || {};
+                                if (cellstyle.font.bold)
+                                    cell.style.font.bold = true;
+                                if (cellstyle.font.family !== undefined)
+                                    cell.style.font.family =
+                                        cellstyle.font.family;
+                                if (cellstyle.font.italic)
+                                    cell.style.font.italic = true;
+                                if (cellstyle.font.name)
+                                    cell.style.font.name = cellstyle.font.name;
+                                if (cellstyle.font.size !== undefined)
+                                    cell.style.font.size = cellstyle.font.size;
                             }
-                            if(cellstyle.color !== undefined) {
-                                cell.style.font = cell.style.font || {}
-                                cell.style.font.color = getColor(cellstyle.color);
+                            if (cellstyle.color !== undefined) {
+                                cell.style.font = cell.style.font || {};
+                                cell.style.font.color = getColor(
+                                    cellstyle.color
+                                );
                             }
-                            if(cellstyle.strike){
-                                cell.style.font = cell.style.font || {}
+                            if (cellstyle.strike) {
+                                cell.style.font = cell.style.font || {};
                                 cell.style.font.strike = true;
                             }
-                            if(cellstyle.underline){
-                                cell.style.font = cell.style.font || {}
+                            if (cellstyle.underline) {
+                                cell.style.font = cell.style.font || {};
                                 cell.style.font.underline = true;
                             }
-                            if(cellstyle.textwrap){
-                                cell.style.alignment = cell.style.alignment || {}
-                                cell.style.alignment.wrapText = true
+                            if (cellstyle.textwrap) {
+                                cell.style.alignment =
+                                    cell.style.alignment || {};
+                                cell.style.alignment.wrapText = true;
                             }
 
-                            if(cellstyle.align !== undefined) {
-                                cell.style.alignment = cell.style.alignment || {}
-                                cell.style.alignment.horizontal = cellstyle.align;
+                            if (cellstyle.align !== undefined) {
+                                cell.style.alignment =
+                                    cell.style.alignment || {};
+                                cell.style.alignment.horizontal =
+                                    cellstyle.align;
                             }
 
                             if (cellstyle.valign !== undefined) {
-                                cell.style.alignment = cell.style.alignment || {}
-                                cell.style.alignment.vertical = cellstyle.valign;
+                                cell.style.alignment =
+                                    cell.style.alignment || {};
+                                cell.style.alignment.vertical =
+                                    cellstyle.valign;
                             }
 
-                            if(cellstyle.format  !== undefined && cellstyle.format !== "") {
+                            if (
+                                cellstyle.format !== undefined &&
+                                cellstyle.format !== ""
+                            ) {
                                 cell.style.numFmt = cellstyle.format;
                                 // if(cellstyle.format === "percent") {
                                 //     cell.style.numFmt = "0.00%"
@@ -426,12 +430,8 @@ export function toExcelJS(data: SheetData[]): Workbook {
                                 // } else if (cellstyle.format === "time") {
                                 //     cell.style.numFmt === "[$-F400]h:mm:ss AM/PM"
                                 // }
-                            } 
-                    
+                            }
                         }
-
-                        
-                        
 
                         // cell.numFmt = "00.00"
                     }
@@ -440,10 +440,15 @@ export function toExcelJS(data: SheetData[]): Workbook {
         }
 
         const merges = ssheet.merges;
-        if(merges){
-            merges.forEach(merge => {
+        if (merges) {
+            merges.forEach((merge) => {
                 wsheet.mergeCells(merge);
-            })
+            });
+        }
+
+        if (ssheet.autofilter) {
+            wsheet.autoFilter = ssheet.autofilter.ref;
+            // (wsheet as any).autoFilter = ssheet.autofilter;
         }
     }
 

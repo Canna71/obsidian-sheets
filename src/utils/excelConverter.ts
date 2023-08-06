@@ -439,5 +439,18 @@ export function toExcelJS(data: SheetData[]): Workbook {
             })
         }
     }
+
+    // workbook.creator
+    // workbook.category
+    // workbook.company
+    // workbook.created // Date
+    // workbook.creator
+    // workbook.keywords
+    // workbook.lastModifiedBy
+    // workbook.manager
+    // workbook.modified // Date
+    // workbook.subject
+    // workbook.title
+
     return workbook;
 }

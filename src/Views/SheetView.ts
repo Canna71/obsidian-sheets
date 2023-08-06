@@ -20,7 +20,6 @@ import { stox } from "../utils/xlsxpread";
 import { toSpreadsheet } from "src/utils/excelConverter";
 import { createSpreadSheet, prepareDataForSaving, saveToFile } from "./spreadSheetWrapper";
 import Spreadsheet from "x-data-spreadsheet";
-import { SheetData } from "x-data-spreadsheet";
 
 
 const DEFAULT_OPTIONS = {
@@ -209,7 +208,7 @@ function saveDataIntoBlock(
     ctx: MarkdownPostProcessorContext
 ) {
     const s = (ctx as any).spreadsheet as Spreadsheet;
-    const dts = prepareDataForSaving( s.getData() as SheetData[] );
+    const dts = prepareDataForSaving( s );
 
     const view = app.workspace.getActiveViewOfType(MarkdownView);
     if (!view) return;

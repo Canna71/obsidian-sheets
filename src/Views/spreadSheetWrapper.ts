@@ -5,6 +5,7 @@ import * as XLSX from "xlsx";
 import { xtos } from "../utils/xlsxpread";
 import { toExcelJS } from "src/utils/excelConverter";
 import { SheetData } from "x-data-spreadsheet";
+import { SpreadsheetData } from "x-data-spreadsheet";
 
 
 function resolve_book_type(fileName: string): XLSX.BookType {
@@ -61,10 +62,17 @@ export function createSpreadSheet(
     options: SheetOptions,
     ctx: MarkdownPostProcessorContext
 ) {
+
+    // const data: SheetData[] = prepareDataForLoading(options.data as SpreadsheetData)
+
     const spreadSheet = new Spreadsheet(
         container,
         spreadsheet_options
-    ).loadData(options.data || {});
+    )
+    // .loadData(options.data || {});
+
+    prepareDataForLoading(spreadSheet, options.data as SpreadsheetData)
+
     spreadSheet.change(
         debounce((_data) => {
             // save data
@@ -132,7 +140,14 @@ function styleSS2WB(ssstyle: any) {
 }
 
 
-export function prepareDataForSaving(data: SheetData[]): SheetData[] {
+export function prepareDataForSaving(spreadSheet: Spreadsheet): SpreadsheetData {
+    const data = spreadSheet.getData() as SheetData[];
+    
+    // get some info
+    const selector = (spreadSheet as any).sheet.data.selector;
+    const sheetName = (spreadSheet as any).sheet.data.name;
+    
+    
 
     for(const sheet of data){
         const actualStyles = [];
@@ -161,5 +176,56 @@ export function prepareDataForSaving(data: SheetData[]): SheetData[] {
         }
         sheet.styles = actualStyles;
     }
-    return data;
+
+    const spreadSheetData : SpreadsheetData = {...data}
+
+    spreadSheetData.state = {
+        sheetName,
+        selector
+    }
+
+    return spreadSheetData;
+}
+
+function prepareDataForLoading(spreadsheet:Spreadsheet, spreadSheetData: SpreadsheetData): Spreadsheet {
+    if(spreadSheetData === undefined){
+        return spreadsheet.loadData({});
+    } else {
+        const sheets = []
+        for(const sheetId in spreadSheetData){
+            const sheetNum = Number(sheetId)
+            if(!isNaN(sheetNum)){
+                sheets[sheetNum] = spreadSheetData[sheetId]
+            }
+        }
+        spreadsheet.loadData(sheets);
+        if(spreadSheetData.state?.sheetName){
+            console.log("here");
+            // const d = this.datas[index];
+            // this.sheet.resetData(d);
+            const s = (spreadsheet as any);
+            // const d = s.datas.find(d => d.name === spreadSheetData.state?.sheetName)
+            const i = s.datas.findIndex(d => d.name === spreadSheetData.state?.sheetName)
+            
+            const d = s.datas[i];
+            const selector = spreadSheetData.state?.selector
+            if(selector){
+                // d.selector = spreadSheetData.state?.selector; 
+                d.selector.setIndexes(selector.ri, selector.ci);
+                d.selector.range.sci = selector.range.sci;
+                d.selector.range.sri = selector.range.sri;
+                d.selector.range.eci = selector.range.eci;
+                d.selector.range.eri = selector.range.eri;
+                d.selector.range.h = selector.range.h;
+                d.selector.range.w = selector.range.w;
+
+            }
+            if(i>=0){
+                // TODO: provide an ad hoc method in x-spreadsheet
+                s.bottombar.clickSwap2(s.bottombar.items[i]); 
+            }
+            
+        }
+        return spreadsheet;
+    }
 }

@@ -189,3 +189,11 @@ ul.x-spreadsheet-menu {
  div.x-spreadsheet-dropdown-title {
     color: #000000;
  }
+
+ .x-spreadsheet-form-input {
+    // color: #000000; 
+    input {
+        color: rgba(0, 0, 0, 0.65);
+        font-weight: bold;
+    }
+ }

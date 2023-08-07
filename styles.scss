@@ -197,3 +197,23 @@ ul.x-spreadsheet-menu {
         font-weight: bold;
     }
  }
+
+.x-spreadsheet-icon-img.arrow-down {
+    margin: 0;
+    border: 0;
+}
+
+// TODO: create custom classes for each dropdown item, then sets limits accordingly
+// we suppose a min height of 400px for the whole spreadhsheet
+
+// .x-spreadsheet-dropdown .x-spreadsheet-dropdown-content {
+//     max-height: 300px;
+//     overflow-y: auto;
+// }
+
+// .x-spreadsheet-dropdown-content .x-spreadsheet-dropdown-content {
+//     z-index: 201;
+//     .x-spreadsheet-dropdown-content {
+//         z-index: 202;
+//     }
+// }

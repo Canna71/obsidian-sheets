@@ -10,7 +10,9 @@
 
 .x-spreadsheet {
 
-    --accent-color: hsl(var(--accent-h), var(--accent-s), var(--accent-l) );
+    // --accent-color: hsl(var(--accent-h), var(--accent-s), var(--accent-l) );
+    // --accent-color: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l)-12%) );
+    --accent-color: var(--ax2);
 }
 
 div.x-spreadsheet-sheet

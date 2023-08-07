@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS, SheetjsSettings } from "src/Settings";
+import { DEFAULT_SETTINGS, SheetsSettings } from "src/Settings";
 import { addIcon, MarkdownView } from "obsidian";
 
 
@@ -21,11 +21,11 @@ const sheetSVG = `<svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://ww
 
 // Remember to rename these classes and interfaces!
 
-let gSettings: SheetjsSettings;
+let gSettings: SheetsSettings;
 
 export function getSheetjsSettings() { return gSettings; }
 export default class SheetjsPlugin extends Plugin {
-    settings: SheetjsSettings;
+    settings: SheetsSettings;
  
     async onload() {
         await this.loadSettings();

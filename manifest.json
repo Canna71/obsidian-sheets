@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-sheetjs",
-	"name": "sheetjs",
+	"id": "obsidian-sheets",
+	"name": "sheets",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "TODO:",

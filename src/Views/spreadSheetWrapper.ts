@@ -204,7 +204,7 @@ function prepareDataForLoading(spreadsheet:Spreadsheet, spreadSheetData: Spreads
             // this.sheet.resetData(d);
             const s = (spreadsheet as any);
             // const d = s.datas.find(d => d.name === spreadSheetData.state?.sheetName)
-            const i = s.datas.findIndex(d => d.name === spreadSheetData.state?.sheetName)
+            const i = s.datas.findIndex((d:any) => d.name === spreadSheetData.state?.sheetName)
             
             const d = s.datas[i];
             const selector = spreadSheetData.state?.selector

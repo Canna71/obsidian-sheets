@@ -9,7 +9,7 @@ import {
     stringifyYaml,
     Notice,
 } from "obsidian";
-import { SheetjsSettings } from "src/Settings";
+import { SheetsSettings } from "src/Settings";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
 // import * as fs from "fs/promises"
 // import * as path from "path"
@@ -39,7 +39,7 @@ const saveIcon =
 export function processCodeBlock(
     source: string,
     el: HTMLElement,
-    settings: SheetjsSettings,
+    settings: SheetsSettings,
     ctx: MarkdownPostProcessorContext
 ) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

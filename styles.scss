@@ -8,6 +8,11 @@
 //     background: var(--background-primary);
 // }
 
+.x-spreadsheet {
+
+    --accent-color: hsl(var(--accent-h), var(--accent-s), var(--accent-l) );
+}
+
 div.x-spreadsheet-sheet
     > div.x-spreadsheet-overlayer
     > div

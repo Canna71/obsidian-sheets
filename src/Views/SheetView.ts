@@ -47,14 +47,14 @@ export function processCodeBlock(
 
     // const containerHeight = Math.clamp((ctx as any).containerEl.offsetHeight, 200, 800);
     // TODO: check this actually exists
-    let bgColor = "#ffffff";
-    let fgColor = "#000"; //"#a0a0a0";
-    const cel = document.getElementsByClassName("view-content")[0];
-    if (cel) {
-        const styles = getComputedStyle(cel);
-        bgColor = bgColor || styles.getPropertyValue("background");
-        fgColor = fgColor || styles.getPropertyValue("color");
-    }
+    // let bgColor = "#ffffff";
+    // let fgColor = "#000"; //"#a0a0a0";
+    // const cel = document.getElementsByClassName("view-content")[0];
+    // if (cel) {
+    //     const styles = getComputedStyle(cel);
+    //     bgColor = bgColor || styles.getPropertyValue("background");
+    //     fgColor = fgColor || styles.getPropertyValue("color");
+    // }
 
     if ((ctx as any).spreadsheet) return;
 
@@ -90,6 +90,7 @@ export function processCodeBlock(
         showToolbar: true,
         showGrid: true,
         showContextmenu: true,
+        showValidation: false,
         view: {
             height: () => height,
             width: () => {
@@ -106,13 +107,13 @@ export function processCodeBlock(
             width: cellWidth,
         },
         style: {
-            bgcolor: bgColor,
+            // bgcolor: bgColor,
             align: "left",
             valign: "middle",
             textwrap: false,
             strike: false,
             underline: false,
-            color: fgColor,
+            // color: fgColor,
             font: {
                 // name: font,
                 size: fontSize,

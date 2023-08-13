@@ -1,11 +1,14 @@
+// import { Spreadsheet } from 'x-data-spreadsheet';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MarkdownPostProcessorContext, debounce } from "obsidian";
-import Spreadsheet from "x-data-spreadsheet";
 import * as XLSX from "xlsx";
 import { xtos } from "../utils/xlsxpread";
 import { toExcelJS } from "src/utils/excelConverter";
-import { SheetData } from "x-data-spreadsheet";
-import { SpreadsheetData } from "x-data-spreadsheet";
+import { SheetData, SpreadsheetData } from "x-data-spreadsheet";
+// HACK
+import  Spreadsheet from "x-data-spreadsheet";
+// import * as Spreadsheet from "x-data-spreadsheet";
+// const { Spreadsheet } = require("x-data-spreadsheet");
 
 
 function resolve_book_type(fileName: string): XLSX.BookType {

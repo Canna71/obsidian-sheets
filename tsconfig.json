@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+        "x-data-spreadsheet": ["node_modules/x-data-spreadsheet"]
+    },
     "inlineSourceMap": true,
     "inlineSources": true,
     "module": "ESNext",

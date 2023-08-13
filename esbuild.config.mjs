@@ -6,6 +6,12 @@ import {sassPlugin} from 'esbuild-sass-plugin'
 import { lessLoader } from 'esbuild-plugin-less';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // import * as path from 'path'
+import alias from 'esbuild-plugin-alias';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const banner =
 `/*
@@ -46,11 +52,16 @@ esbuild.build({
 	treeShaking: true,
 	outfile: 'main.js',
     // https://github.com/glromeo/esbuild-sass-plugin#--rewriting-relative-urls
-    plugins: [ lessLoader({})],
+    plugins: [ 
+        lessLoader({}),
+        alias({
+            'x-data-spreadsheet': path.resolve(__dirname,'node_modules/x-data-spreadsheet/dist/xspreadsheet.js')
+          }),
+    ],
     loader: {
         '.ts': 'ts',
         '.svg': 'dataurl',
-    }
+    } 
 }).catch(() => process.exit(1));
 
 esbuild.build({

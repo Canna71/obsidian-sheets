@@ -21,7 +21,6 @@ import { toSpreadsheet } from "src/utils/excelConverter";
 import { createSpreadSheet, prepareDataForSaving, saveToFile } from "./spreadSheetWrapper";
 import Spreadsheet from "x-data-spreadsheet";
 
-
 const DEFAULT_OPTIONS = {
     height: 540,
     width: "auto",

@@ -80,8 +80,13 @@ export function toSpreadsheet(wb: Workbook) {
 
             row.eachCell((cell, cellNumber) => {
                 const cellOb: CellData = {
-                    text: cell.text,
+                    text: ""
                 };
+
+                try {
+                    cellOb.text = cell.text
+                } catch {}
+
                 if (cell.formula) cellOb.text = "=" + cell.formula;
 
                 // style

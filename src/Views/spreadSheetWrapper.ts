@@ -1,12 +1,13 @@
 // import { Spreadsheet } from 'x-data-spreadsheet';
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { MarkdownPostProcessorContext, debounce } from "obsidian";
+import { MarkdownPostProcessorContext, MarkdownView, Notice, debounce, stringifyYaml } from "obsidian";
 import * as XLSX from "xlsx";
 import { xtos } from "../utils/xlsxpread";
 import { toExcelJS } from "src/utils/excelConverter";
 import { SheetData, SpreadsheetData } from "x-data-spreadsheet";
 // HACK
 import  Spreadsheet from "x-data-spreadsheet";
+import { getSheetjsSettings } from "src/main";
 // import * as Spreadsheet from "x-data-spreadsheet";
 // const { Spreadsheet } = require("x-data-spreadsheet");
 
@@ -74,25 +75,88 @@ export function createSpreadSheet(
     )
     // .loadData(options.data || {});
 
+    const settings = getSheetjsSettings()
+
     prepareDataForLoading(spreadSheet, options.data as SpreadsheetData)
 
-    spreadSheet.change(
-        debounce((_data) => {
-            // save data
-            // console.log(data)
-            if (options.filename) {
-                saveToFile(spreadSheet, options.filename);
-            } else {
-                // at the moment we avoid since this would cause re-rendering
-                // saveDataIntoBlock(null,null,ctx)
-            }
+    let focused = true;
 
-            // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
-        }, 1000)
-    );
+    if(settings.autoSave) {
+        spreadSheet.change(
+            debounce((_data) => {
+                // save data
+                // console.log(data)
+                if (options.filename && settings.enableSaveToFile) {
+                    saveToFile(spreadSheet, options.filename);
+                } else {
+                    // at the moment we avoid since this would cause re-rendering
+                    // saveDataIntoBlock(null,null,ctx)
+                }
+
+                // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
+            }, 1000)
+        );
+
+        if(!options.filename && settings.autoSave){
+            const ae = container.closest("[tabindex]");
+            console.log('ae',ae);
+            ae?.addEventListener('blur', debounce((e)=>{
+                // console.log(`focus changed `,e);
+                const tmp = document.activeElement;
+                saveDataIntoBlock(null,null,ctx);
+                // let el = tmp;
+                // let f = false;
+                // while(el?.parentElement) {
+                //     if(el === container) {
+                //         f = true;
+                //         break;
+                //     }
+                //     el = el.parentElement;
+                // }
+                // if(focused && !f){
+                //     // lost focus
+                //     console.log(`lost focus`);
+                // }
+                // focused = f;
+            }))
+        }
+
+
+    }
 
     return spreadSheet;
 }
+
+
+export function saveDataIntoBlock(
+    data: any,
+    sheet: any,
+    ctx: MarkdownPostProcessorContext
+) {
+    const s = (ctx as any).spreadsheet as Spreadsheet;
+    const dts = prepareDataForSaving( s );
+
+    const view = app.workspace.getActiveViewOfType(MarkdownView);
+    if (!view) return;
+    if (view.getMode() === "source") {
+        const sec = ctx.getSectionInfo((ctx as any).el as HTMLElement);
+        if (sec) {
+            const obj = { data: dts };
+            const yaml = stringifyYaml(obj) + "\n";
+            view?.editor.replaceRange(
+                yaml,
+                { line: sec?.lineStart + 1, ch: 0 },
+                { line: sec?.lineEnd, ch: 0 },
+                "*"
+            );
+            console.info("Data saved on code block");
+        }
+    } else {
+        // preview
+        new Notice("Sheet not saved while in reading mode");
+    }
+}
+
 
 export async function saveToFile(spreadSheet: Spreadsheet, filename: string) {
 

@@ -4,10 +4,7 @@
 // https://github.com/exceljs/exceljs#reading-xlsx
 import {
     MarkdownPostProcessorContext,
-    MarkdownView,
     parseYaml,
-    stringifyYaml,
-    Notice,
 } from "obsidian";
 import { SheetsSettings } from "src/Settings";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
@@ -20,7 +17,6 @@ import { stox } from "../utils/xlsxpread";
 import { toSpreadsheet } from "src/utils/excelConverter";
 import {
     createSpreadSheet,
-    prepareDataForSaving,
     
     saveDataIntoBlock,
     
@@ -82,6 +78,7 @@ export function processCodeBlock(
 
     const container = el; //.createDiv();
     container.style.width = containerWidth() + "px";
+    container.tabIndex = -1;
     if (container.parentElement) {
         container.parentElement.style.overflow = "hidden";
     }
@@ -112,13 +109,13 @@ export function processCodeBlock(
             width: cellWidth,
         },
         style: {
-            // bgcolor: bgColor,
+            // bgcolor: "#fff",
             align: "left",
             valign: "middle",
             textwrap: false,
             strike: false,
             underline: false,
-            // color: fgColor,
+            // color: "#000",
             font: {
                 // name: font,
                 size: fontSize,

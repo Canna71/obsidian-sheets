@@ -79,7 +79,6 @@ export function createSpreadSheet(
 
     prepareDataForLoading(spreadSheet, options.data as SpreadsheetData)
 
-    let focused = true;
 
     if(settings.autoSave) {
         spreadSheet.change(
@@ -96,30 +95,6 @@ export function createSpreadSheet(
                 // XLSX.writeFile(xtos(s.getData(data)) as any, filename);
             }, 1000)
         );
-
-        if(!options.filename && settings.autoSave){
-            const ae = container.closest("[tabindex]");
-            console.log('ae',ae);
-            ae?.addEventListener('blur', debounce((e)=>{
-                // console.log(`focus changed `,e);
-                const tmp = document.activeElement;
-                saveDataIntoBlock(null,null,ctx);
-                // let el = tmp;
-                // let f = false;
-                // while(el?.parentElement) {
-                //     if(el === container) {
-                //         f = true;
-                //         break;
-                //     }
-                //     el = el.parentElement;
-                // }
-                // if(focused && !f){
-                //     // lost focus
-                //     console.log(`lost focus`);
-                // }
-                // focused = f;
-            }))
-        }
 
 
     }

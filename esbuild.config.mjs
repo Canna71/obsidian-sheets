@@ -60,7 +60,7 @@ esbuild.build({
     ],
     loader: {
         '.ts': 'ts',
-        '.svg': 'dataurl',
+        '.svg': 'text',
     } 
 }).catch(() => process.exit(1));
 

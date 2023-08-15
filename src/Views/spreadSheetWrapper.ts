@@ -51,7 +51,7 @@ function applyStyles(ssdata: any, wb: XLSX.WorkBook) {
         }
     }
 }
-
+ 
 
 
 
@@ -139,8 +139,14 @@ export async function saveToFile(spreadSheet: Spreadsheet, filename: string) {
     const bookType = resolve_book_type(filename);
     if(bookType === 'xlsx' || bookType === 'csv'){
         const workbook = toExcelJS(spreadsheetData);
-        const buffer = await workbook.xlsx.writeBuffer();
-        app.vault.adapter.writeBinary(filename, buffer);
+        if(bookType === 'xlsx'){
+            const buffer = await workbook.xlsx.writeBuffer();
+            app.vault.adapter.writeBinary(filename, buffer);
+        } else {
+            const buffer = await workbook.csv.writeBuffer();
+            app.vault.adapter.writeBinary(filename, buffer);
+        }
+
         console.log(`data saved tp ${filename}`);
     } else {
         const wb = xtos(spreadsheetData) as XLSX.WorkBook;

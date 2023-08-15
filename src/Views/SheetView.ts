@@ -22,6 +22,7 @@ import {
     
     saveToFile,
 } from "./spreadSheetWrapper";
+import {  Readable, Stream } from "stream";
 
 const DEFAULT_OPTIONS = {
     height: 540,
@@ -191,8 +192,22 @@ async function parseFileContent(filename: string, fileContent: ArrayBuffer) {
     const ext = filename.slice(filename.lastIndexOf(".")).toLowerCase();
     if (ext === ".xlsx" || ext === ".csv") {
         const workbook = new ExcelJS.Workbook();
-        const excelWorkbook = await workbook.xlsx.load(fileContent);
-        const data2 = toSpreadsheet(excelWorkbook);
+
+        // let excelWorkbook : ExcelJS.Workbook | undefined = undefined;
+        if(ext === ".csv") {
+            
+            await workbook.csv.read(new Readable({
+                read() {
+                  this.push(Buffer.from(fileContent));
+                  this.push(null);
+                }
+              }));
+            
+        } else {
+             await workbook.xlsx.load(fileContent);
+        }
+        
+        const data2 = toSpreadsheet(workbook);
         return data2;
     } else {
         const xlsx = XLSX.read(fileContent, {

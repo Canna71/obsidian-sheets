@@ -186,7 +186,6 @@ export function processCodeBlock(
             })();
         } else {
 
-            console.log((ctx as any).containerEl.offsetWidth);
             let wait = 0;
             if(!(ctx as any).containerEl.offsetWidth) {
                 wait = 500; // hack for first opening

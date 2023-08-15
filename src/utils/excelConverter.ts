@@ -146,9 +146,6 @@ export function toSpreadsheet(wb: Workbook) {
                         oStyle.font = oStyle.font || {};
                         oStyle.font.size = font.size;
                     }
-                    // if(font.vertAlign) {
-                    //     console.log("here");
-                    // }
                 }
                 if (cell.style.alignment) {
                     //
@@ -166,17 +163,6 @@ export function toSpreadsheet(wb: Workbook) {
                 if (cell.style.numFmt) {
                     const numFmt = cell.style.numFmt;
                     oStyle.format = numFmt;
-                    // if (numFmt.endsWith("%")) {
-                    //     (oStyle).format = "percent";
-                    //     // TODO: 0.00%
-                    // } else if (numFmt.contains("€")) {
-                    //     (oStyle).format = "eur";
-                    // } else if (numFmt.contains("$")) {
-                    //     (oStyle).format = "usd";
-                    // } else if (numFmt === "@") {
-                    //     (oStyle).format = "text";
-                    // }
-                    // console.log(numFmt);
                 }
                 if (cell.style.protection) {
                     //TODO:
@@ -229,9 +215,6 @@ export function toSpreadsheet(wb: Workbook) {
 
         return ows;
     });
-    console.log(out);
-
-    
 
     return out;
 }

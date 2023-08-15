@@ -31,7 +31,6 @@ function resolve_book_type(fileName: string): XLSX.BookType {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function applyStyles(ssdata: any, wb: XLSX.WorkBook) {
-    console.log(ssdata, wb);
     for (const sheet of ssdata) {
         const { name, styles, rows } = sheet;
         for (const rowId in rows) {
@@ -84,7 +83,6 @@ export function createSpreadSheet(
         spreadSheet.change(
             debounce((_data) => {
                 // save data
-                // console.log(data)
                 if (options.filename && settings.enableSaveToFile) {
                     saveToFile(spreadSheet, options.filename);
                 } else {
@@ -147,7 +145,6 @@ export async function saveToFile(spreadSheet: Spreadsheet, filename: string) {
             app.vault.adapter.writeBinary(filename, buffer);
         }
 
-        console.log(`data saved tp ${filename}`);
     } else {
         const wb = xtos(spreadsheetData) as XLSX.WorkBook;
         // applyStyles(spreadsheetData, wb);
@@ -159,7 +156,6 @@ export async function saveToFile(spreadSheet: Spreadsheet, filename: string) {
             cellStyles: true,
         });
         app.vault.adapter.writeBinary(filename, bytes);
-        console.log(`data saved tp ${filename}`);
     }
 
 

@@ -8,22 +8,25 @@
 //     background: var(--background-primary);
 // }
 
-.x-spreadsheet {
+// .x-spreadsheet {
+//     --ss-accent-h: var(--accent-h);
+//     --ss-accent-s: var(--accent-s);
+//     --ss-accent-l: var(--accent-l);
+// }
 
-    // --accent-color: hsl(var(--accent-h), var(--accent-s), var(--accent-l) );
-    // --accent-color: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l)-12%) );
-    
-    --ss-accent-h: var(--accent-h);
-    --ss-accent-s: var(--accent-s);
-    --ss-accent-l: var(--accent-l);
-    --ss-background: var(--background-primary);
-    --ss-background-secondary: var(--background-secondary);
-    --ss-background-alt: var(--background-primary-alt);
-    --ss-background-secondary-alt: var(--background-secondary-alt);
-    --ss-text-color: var(--text-normal);
-    --ss-text-color-muted: var(--text-muted);
-    --ss-border-color: var(--divider-color);
-}  
+// .x-spreadsheet {
+ 
+//     --ss-accent-h: var(--accent-h);
+//     --ss-accent-s: var(--accent-s);
+//     --ss-accent-l: var(--accent-l);
+//     --ss-background: var(--background-primary);
+//     --ss-background-secondary: var(--background-secondary);
+//     --ss-background-alt: var(--background-primary-alt);
+//     --ss-background-secondary-alt: var(--background-secondary-alt);
+//     --ss-text-color: var(--text-normal);
+//     --ss-text-color-muted: var(--text-muted);
+//     --ss-border-color: var(--divider-color);
+// }  
 
 // div.x-spreadsheet-sheet
 //     > div.x-spreadsheet-overlayer

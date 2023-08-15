@@ -4,7 +4,7 @@
 // https://github.com/exceljs/exceljs#reading-xlsx
 import {
     MarkdownPostProcessorContext,
-    parseYaml,
+    parseYaml
 } from "obsidian";
 import { SheetsSettings } from "src/Settings";
 // import "x-data-spreadsheet/dist/xspreadsheet.css";
@@ -22,7 +22,9 @@ import {
     
     saveToFile,
 } from "./spreadSheetWrapper";
-import {  Readable, Stream } from "stream";
+import {  Readable } from "stream";
+import moment from "moment";
+
 
 const DEFAULT_OPTIONS = {
     height: 540,
@@ -124,6 +126,20 @@ export function processCodeBlock(
                 italic: false,
             } as any,
         },
+        formats: [
+            {
+              key: 'date',
+              numfmt: moment.localeData().longDateFormat('L').toLowerCase() ,
+              label: moment().format("L"),
+              title: 'Short Date'
+            },
+            {
+              key: 'longdate',
+              numfmt: moment.localeData().longDateFormat('LL').toLowerCase(),
+              label: moment().format("LL"),
+              title: 'Long Date'
+            },
+          ]
         // onKeyDown: (evt) => {
         // }
     };
@@ -169,12 +185,21 @@ export function processCodeBlock(
                 // .loadData();
             })();
         } else {
-            (ctx as any).spreadsheet = createSpreadSheet(
-                container,
-                spreadsheet_options,
-                { ...options },
-                ctx
-            );
+
+            console.log((ctx as any).containerEl.offsetWidth);
+            let wait = 0;
+            if(!(ctx as any).containerEl.offsetWidth) {
+                wait = 500; // hack for first opening
+            }
+            setTimeout(()=>{
+                (ctx as any).spreadsheet = createSpreadSheet(
+                    container,
+                    spreadsheet_options,
+                    { ...options },
+                    ctx
+                );
+            },wait);
+            
         }
     // }, 0);
 

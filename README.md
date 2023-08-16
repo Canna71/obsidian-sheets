@@ -17,7 +17,7 @@ In order to create a sheet it is enough to create a code block with the `sheet` 
 ```
 ~~~
 
-Following is the complete list of properties:
+Following is the complete list of properties with their default values:
 
 ~~~markdown
 ```sheet
@@ -54,5 +54,7 @@ CSV can, of course, only store data.
 This plugin uses the following libraries:
 
 https://github.com/SheetJS
+
 https://github.com/myliang/x-spreadsheet (forked here: https://github.com/Canna71/x-spreadsheet)
+
 https://github.com/exceljs/exceljs

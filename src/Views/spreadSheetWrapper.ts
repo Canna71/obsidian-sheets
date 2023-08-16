@@ -57,6 +57,8 @@ function applyStyles(ssdata: any, wb: XLSX.WorkBook) {
 export interface SheetOptions {
     filename?: string;
     data?: any;
+    enableSave?: boolean;
+    autoSave?: boolean;
 }
 
 export function createSpreadSheet(
@@ -79,11 +81,11 @@ export function createSpreadSheet(
     prepareDataForLoading(spreadSheet, options.data as SpreadsheetData)
 
 
-    if(settings.autoSave) {
+    if(options.autoSave) {
         spreadSheet.change(
             debounce((_data) => {
                 // save data
-                if (options.filename && settings.enableSaveToFile) {
+                if (options.filename && options.enableSave) {
                     saveToFile(spreadSheet, options.filename);
                 } else {
                     // at the moment we avoid since this would cause re-rendering

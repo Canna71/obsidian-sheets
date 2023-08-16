@@ -63,7 +63,7 @@ export function processCodeBlock(
 
     if ((ctx as any).spreadsheet) return;
 
-    const options = { ...DEFAULT_OPTIONS, ...parseYaml(source) };
+    const options = { ...DEFAULT_OPTIONS, enableSave: settings.enableSaveToFile, autoSave: settings.autoSave, ...parseYaml(source) };
 
     options.height = Math.max(options.height, MINHEIGHT);
 
@@ -145,7 +145,7 @@ export function processCodeBlock(
         // }
     };
 
-    if (!filename || settings.enableSaveToFile) {
+    if (!filename || options.enableSave) {
         const el = document.createElement("div");
         el.innerHTML = saveIcon;
         spreadsheet_options.extendToolbar = {

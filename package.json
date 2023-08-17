@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-sheets",
 	"version": "1.0.0",
-	"description": "TODO:",
+	"description": "Work with Spreasheets inside your notes",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

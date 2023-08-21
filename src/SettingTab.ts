@@ -14,7 +14,6 @@ export class SheetjsSettingsTab extends PluginSettingTab {
 
         containerEl.empty();
 
-        containerEl.createEl("h2", { text: "Sheetjs Settings" });
 
         this.createToggle(
             containerEl,

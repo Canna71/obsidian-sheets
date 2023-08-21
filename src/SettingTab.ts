@@ -17,14 +17,14 @@ export class SheetjsSettingsTab extends PluginSettingTab {
 
         this.createToggle(
             containerEl,
-            "Enable Saving To File",
+            "Enable saving to file",
             "Enabling saving to external files (.xlsx, .xls, ,.csv)",
             "enableSaveToFile"
         );
 
         this.createToggle(
             containerEl,
-            "Auto Save",
+            "Auto save",
             "Saves automatically",
             "autoSave"
         );

@@ -23,7 +23,7 @@ import {
     saveToFile,
 } from "./spreadSheetWrapper";
 import {  Readable } from "stream";
-import moment from "moment";
+import { moment } from "obsidian";
 
 import saveIcon from "./save.svg";
 

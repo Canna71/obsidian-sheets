@@ -34,60 +34,14 @@ export default class SheetjsPlugin extends Plugin {
         addIcon("sheet",sheetSVG); 
 
 
-        if (this.settings.addRibbonIcon) {
-            // This creates an icon in the left ribbon.
-            const ribbonIconEl = this.addRibbonIcon(
-                "sheet",
-                "Add Sheet",
-                (evt: MouseEvent) => {
-                    this.addTable();
-                }
-            );
-            // Perform additional things with the ribbon
-            ribbonIconEl.addClass("Sheetjs-ribbon-class");
-        }
-
-        this.addCommand({
-            id: "add-sheet-table",
-            name: "Add Sheet Table",
-            callback: () => this.addTable(),
-          });
-         
-
-        this.app.workspace.onLayoutReady(() => {
-
-        });
-
         this.registerCodeBlock();
-        this.registerPostProcessor();
-        this.registerEditorExtensions();
-
-        this.app.workspace.on(
-            "active-leaf-change",
-            (leaf: WorkspaceLeaf | null) => {
-                if (leaf?.view instanceof MarkdownView) {
-                    // @ts-expect-error, not typed
-                    const editorView = leaf.view.editor.cm as EditorView;
-                    
-                }
-            },
-            this
-        );
-
-        this.app.workspace.on(
-            "codemirror",
-            (cm: CodeMirror.Editor) => {
-            },
-            this
-        );
+        
 
         this.addSettingTab(new SheetjsSettingsTab(this.app, this));
     }
 
 
-    addTable() {
-        throw new Error("Method not implemented.");
-    }
+
 
     onunload() {
     }
@@ -108,8 +62,7 @@ export default class SheetjsPlugin extends Plugin {
     
 
     async registerCodeBlock() {
-        await loadMathJax();
-        await finishRenderMath();
+      
         this.registerMarkdownCodeBlockProcessor(
             "sheet",
             (source, el, ctx) => {
@@ -118,15 +71,6 @@ export default class SheetjsPlugin extends Plugin {
         );
     }
 
-    async registerPostProcessor() {
-        // await loadMathJax();
-        // await finishRenderMath();
-        // this.registerMarkdownPostProcessor(getPostPrcessor(this.settings));
-    }
-
-    async registerEditorExtensions() {
-        // this.registerEditorExtension([resultField, SheetjsConfigField]);
-    }
 }
 
 

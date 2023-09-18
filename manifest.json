@@ -1,6 +1,6 @@
 {
-	"id": "sheets",
-	"name": "Sheets",
+	"id": "workbooks",
+	"name": "Workbooks",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Work with Spreadsheets inside your notes",

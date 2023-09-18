@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-sheets",
-	"name": "Sheets",
+	"id": "obsidian-workbooks",
+	"name": "Workbooks",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Work with Spreadsheets inside your notes",

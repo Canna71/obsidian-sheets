@@ -1,5 +1,5 @@
 {
-	"name": "obsidian-sheets",
+	"name": "obsidian-workbooks",
 	"version": "1.0.0",
 	"description": "Work with Spreadsheets inside your notes",
 	"main": "main.js",

@@ -1,6 +1,6 @@
 # Obsidian Sheets
 
-![](docs/Screen01.png)
+![](docs/screen01.png)
 
 This plugin enables to work with tabular data directly in Obsidian: either storing data in the note itself, or on an external Excel or CSV file.
 The following files are supported:

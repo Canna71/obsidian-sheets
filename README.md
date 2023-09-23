@@ -26,7 +26,7 @@ Following is the complete list of properties with their default values:
 filename: <path relative to vault root>
 enableSave: <value in settings>
 autoSave: <value in settings>
-height: 540,
+height: 540
 width: "auto"
 rows: 100
 cols: 26

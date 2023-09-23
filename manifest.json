@@ -1,7 +1,7 @@
 {
 	"id": "workbooks",
 	"name": "Workbooks",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Work with Spreadsheets inside your notes",
 	"author": "Gabriele Cannata",

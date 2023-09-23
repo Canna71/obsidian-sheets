@@ -21,18 +21,18 @@ In order to create a sheet it is enough to create a code block with the `sheet` 
 
 Following is the complete list of properties with their default values:
 
-~~~markdown
+~~~yaml
 ```sheet
 filename: <path relative to vault root>
 enableSave: <value in settings>
 autoSave: <value in settings>
 height: 540,
-width: "auto",
-rows: 100,
-cols: 26,
-fontSize: 10,
-cellHeight: 25,
-cellWidth: 100,
+width: "auto"
+rows: 100
+cols: 26
+fontSize: 10
+cellHeight: 25
+cellWidth: 100
 ```
 ~~~
 
